@@ -3,36 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>📅 2026 深度攻坚日程</title>
+    <title>📅 2026 深度攻坚日程 (Pro)</title>
     
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet" crossorigin="anonymous">
     
     <style>
         :root {
             --primary: #0f172a; --accent: #2563eb; --bg: #f8fafc;
             --card-bg: #ffffff; --border: #e2e8f0;
+            --nav-height: 60px;
         }
 
-        /* 全局重置 */
         *, *::before, *::after { box-sizing: border-box; }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             background-color: var(--bg); color: #334155;
             margin: 0; 
-            overflow-x: hidden; /* 隐藏水平溢出 */
             min-height: 100vh;
             padding: 20px;
-            display: flex; justify-content: center; align-items: flex-start;
+            padding-bottom: 40px; /* Desktop padding */
         }
 
+        /* 布局容器 */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 340px;
+            grid-template-columns: 1fr 360px; /* 右侧加宽一点给图表 */
             gap: 24px;
             width: 100%; max-width: 1400px;
-            margin: 0 auto; min-width: 0; 
+            margin: 0 auto;
         }
 
         .card-box {
@@ -42,36 +42,36 @@
             height: fit-content;
         }
 
-        /* Header */
-        header { 
-            border-bottom: 2px solid var(--primary); 
-            padding-bottom: 15px; margin-bottom: 15px; 
-            display: flex; justify-content: space-between; align-items: end; 
-            flex-wrap: wrap; gap: 10px;
-        }
+        /* 通用样式 */
         h1 { color: var(--primary); margin: 0; font-size: 1.5rem; font-weight: 800; }
         .subtitle { 
             background: #e0f2fe; color: #0369a1; padding: 3px 10px; border-radius: 15px;
             font-weight: 600; font-size: 0.75rem; margin-top: 5px; display: inline-block;
         }
+        
+        /* 顶部操作栏 */
+        .header-controls {
+            display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;
+            margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 15px;
+        }
         .action-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
 
-        /* Calendar */
+        /* Calendar 样式 */
         .month-header {
             background: var(--primary); color: white; padding: 12px 15px; border-radius: 12px 12px 0 0;
             font-size: 1.1rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center;
         }
         .month-nav-btn {
             background: rgba(255,255,255,0.1); border: none; color: white; cursor: pointer;
-            padding: 5px 15px; border-radius: 6px; 
+            padding: 5px 15px; border-radius: 6px; transition: background 0.2s;
         }
+        .month-nav-btn:hover { background: rgba(255,255,255,0.25); }
 
         .calendar-grid {
             display: grid; grid-template-columns: repeat(7, 1fr);
             border: 1px solid var(--border); border-top: none; background: #fff;
             border-radius: 0 0 12px 12px;
             overflow: hidden;
-            /* 禁止长按弹出菜单，交由JS处理 */
             -webkit-user-select: none; user-select: none; 
         }
         .day-head { 
@@ -79,7 +79,6 @@
             border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
         }
         
-        /* 桌面端默认样式 */
         .day-cell { 
             min-height: 120px; padding: 6px; 
             border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); 
@@ -90,7 +89,7 @@
         .day-cell.active-selected { background: #fffbe6; box-shadow: inset 0 0 0 2px #fbbf24; }
         .date-label { font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 6px; display: block; }
 
-        /* 桌面端任务条 */
+        /* 任务条 */
         .task-block {
             padding: 3px 6px; border-radius: 4px; margin-bottom: 3px;
             font-size: 0.75rem; font-weight: 600; 
@@ -98,36 +97,50 @@
             white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         .task-block.completed { opacity: 0.6; text-decoration: line-through; filter: grayscale(100%); }
-        
         .type-learn { background: #eff6ff; color: #1d4ed8; border-left-color: #3b82f6; }
         .type-proj { background: #f0fdf4;  color: #15803d; border-left-color: #22c55e; }
         .type-algo { background: #fff7ed;  color: #c2410c; border-left-color: #f97316; }
         .type-rev { background: #f1f5f9;   color: #475569; border-left-color: #64748b; }
 
-        /* Stats Panel */
-        .stats-panel { position: sticky; top: 20px; }
+        /* 右侧面板样式 */
+        .section-title { font-size: 1rem; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; color: #334155; }
+        .section-title i { margin-right: 8px; color: var(--accent); }
+        
         .stat-card { background: #f8fafc; padding: 15px 10px; border-radius: 8px; margin-bottom: 10px; text-align: center; }
         .stat-value { font-size: 1.4rem; font-weight: 800; color: var(--accent); line-height: 1.2; }
         .stat-label { font-size: 0.75rem; color: #64748b; }
 
-        /* Timer Animation */
+        /* 计时动画 */
         @keyframes pulse-red { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); } 70% { box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
         .timer-btn.active { color: #dc2626; animation: pulse-red 1.5s infinite; border-color: #dc2626; }
+        .refresh-spin { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* 移动端底部导航 (默认隐藏) */
+        .mobile-bottom-nav { display: none; }
 
         /* =========================================
            移动端深度适配
            ========================================= */
         @media (max-width: 768px) {
             body { 
-                padding: 10px; padding-bottom: 30px; 
-                display: block; overflow-x: auto; 
+                padding: 10px; padding-bottom: calc(var(--nav-height) + 20px); 
+                background: #f1f5f9; /* 移动端背景稍微深一点 */
+                display: block; overflow-x: hidden;
             }
-            .main-layout { display: flex; flex-direction: column; gap: 15px; }
-            .card-box { padding: 15px; border-radius: 12px; }
 
-            header { flex-direction: column; align-items: flex-start; gap: 10px; position: relative; }
+            .main-layout { display: block; } /* 取消Grid，改为手动Tab切换控制 */
+            
+            /* 分页控制：默认显示Calendar，隐藏Stats */
+            #view-stats { display: none; } 
+            
+            .card-box { padding: 15px; border-radius: 12px; margin-bottom: 15px; }
+
+            /* 头部调整 */
+            .header-controls { flex-direction: column; align-items: flex-start; gap: 10px; position: relative; }
             #authSection { position: absolute; top: 0; right: 0; } 
-            .action-bar button, .action-bar .btn { flex: 1; font-size: 0.85rem; }
+            .action-bar { display: grid; grid-template-columns: 1fr 1fr 1fr 40px; gap: 8px; width: 100%; }
+            .action-bar button { width: 100%; font-size: 0.8rem; }
 
             /* 点阵日历模式 */
             .day-head { font-size: 0.7rem; padding: 8px 0; }
@@ -136,7 +149,6 @@
                 display: flex; flex-direction: row; flex-wrap: wrap;
                 align-content: flex-start; justify-content: center;
                 padding-top: 28px;
-                /* 关键：优化移动端触控 */
                 touch-action: manipulation;
                 -webkit-tap-highlight-color: transparent;
             }
@@ -151,49 +163,61 @@
                 width: 6px; height: 6px; padding: 0; margin: 1px;
                 border: none; border-radius: 50%; font-size: 0; display: inline-block;
             }
-            .type-learn { background-color: #3b82f6; }
-            .type-proj { background-color: #22c55e; }
-            .type-algo { background-color: #f97316; }
-            .type-rev { background-color: #64748b; }
-            
             .day-cell .text-muted.text-center { display: none; }
-            .stats-panel { order: 2; position: static; }
-            .chart-container { height: 140px !important; }
+
+            /* 底部导航栏 */
+            .mobile-bottom-nav {
+                display: flex; position: fixed; bottom: 0; left: 0; right: 0;
+                background: #fff; height: var(--nav-height);
+                box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000;
+                justify-content: space-around; align-items: center;
+                border-top: 1px solid var(--border);
+            }
+            .nav-item {
+                flex: 1; text-align: center; color: #94a3b8;
+                font-size: 0.75rem; padding: 5px 0; cursor: pointer;
+            }
+            .nav-item i { display: block; font-size: 1.2rem; margin-bottom: 2px; }
+            .nav-item.active { color: var(--accent); font-weight: 600; }
         }
     </style>
 </head>
 <body>
 
 <div class="main-layout">
-    <div class="card-box" style="order: 1;">
-        <header>
+    
+    <div id="view-calendar" class="card-box" style="height: 100%;">
+        <div class="header-controls">
             <div style="width: 100%;">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h1 style="font-size: 1.2rem;">2026 攻坚日程</h1>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h1 style="font-size: 1.3rem;">2026 攻坚日程</h1>
                     <div id="authSection">
                         <button class="btn btn-dark btn-sm rounded-pill" onclick="openLoginModal()" style="font-size: 0.75rem;">
                             <i class="fas fa-user-lock"></i> 登录
                         </button>
                     </div>
                 </div>
-                <div class="subtitle">加油呀~</div>
+                <div class="subtitle">Keep Studying, Keep Growing</div>
             </div>
-        </header>
+        </div>
 
         <div class="action-bar">
-             <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="uploadCsv()">
+            <input type="file" id="csvFileInput" accept=".csv" style="display: none;" onchange="uploadCsv()">
             <button class="btn btn-sm btn-outline-success" onclick="document.getElementById('csvFileInput').click()">
                 <i class="fas fa-file-csv"></i> 导入
             </button>
-            <button class="btn btn-sm btn-outline-primary" onclick="openEditModal()">
+            <button class="btn btn-sm btn-primary" onclick="openEditModal()">
                 <i class="fas fa-plus"></i> 新任务
+            </button>
+            <button class="btn btn-sm btn-outline-secondary" id="refreshBtn" onclick="forceRefresh()">
+                <i class="fas fa-sync-alt" id="refreshIcon"></i>
             </button>
         </div>
 
         <div class="month-section">
             <div class="month-header">
                 <button class="month-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <span id="currentMonthLabel" style="font-size: 1rem;">加载中...</span>
+                <span id="currentMonthLabel">加载中...</span>
                 <button class="month-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
             </div>
             
@@ -205,54 +229,98 @@
         </div>
     </div>
 
-    <div class="card-box stats-panel" style="order: 2;">
-        <div class="stats-header d-flex align-items-center justify-content-between">
-            <span><i class="fas fa-chart-pie me-2"></i><span id="statsDateTitle">今日概览</span></span>
-        </div>
+    <div id="view-stats" style="display: flex; flex-direction: column; gap: 20px;">
         
-        <div class="row align-items-center">
-            <div class="col-5 col-md-12">
-                <div class="chart-container" style="position: relative; height: 160px; width:100%;">
-                    <canvas id="progressChart"></canvas>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
-                        <div id="chartPercent" style="font-size: 1.2rem; font-weight: 800; color: #334155;">0%</div>
-                    </div>
-                </div>
+        <div class="card-box">
+            <div class="section-title">
+                <i class="fas fa-chart-pie"></i> <span id="statsDateTitle">今日概览</span>
             </div>
-            <div class="col-7 col-md-12">
-                <div class="row g-2">
-                    <div class="col-6">
-                        <div class="stat-card">
-                            <div class="stat-value" id="statTotalTime">0h</div>
-                            <div class="stat-label">总投入</div>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-card">
-                            <div class="stat-value" id="statTaskCount">0/0</div>
-                            <div class="stat-label">进度</div>
+            
+            <div class="row align-items-center">
+                <div class="col-5">
+                    <div class="chart-container" style="position: relative; height: 120px; width:100%;">
+                        <canvas id="progressChart"></canvas>
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; pointer-events: none;">
+                            <div id="chartPercent" style="font-size: 1.1rem; font-weight: 800; color: #334155;">0%</div>
                         </div>
                     </div>
                 </div>
-                 <div class="alert alert-info mt-2 mb-0 p-2" style="font-size: 0.7rem;">
-                    <i class="fas fa-lightbulb me-1"></i> <span class="d-none d-md-inline">双击</span><span class="d-md-none">长按</span>日期格子编辑任务。
+                <div class="col-7">
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="stat-card p-2">
+                                <div class="stat-value fs-5" id="statTotalTime">0h</div>
+                                <div class="stat-label">总投入</div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-card p-2">
+                                <div class="stat-value fs-5" id="statTaskCount">0/0</div>
+                                <div class="stat-label">进度</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <div class="card-box flex-grow-1">
+            <div class="section-title d-flex justify-content-between">
+                <span><i class="fas fa-calendar-week"></i> <span id="weeklyTitle">本周概览</span></span>
+                <span class="badge bg-light text-dark fw-normal" id="weekRangeLabel">...</span>
+            </div>
+            
+            <div class="row g-2 mb-3">
+                <div class="col-4">
+                     <div class="text-center p-2 bg-light rounded">
+                         <div class="small text-muted">周总时</div>
+                         <div class="fw-bold text-primary" id="weekTotalTime">0h</div>
+                     </div>
+                </div>
+                <div class="col-4">
+                    <div class="text-center p-2 bg-light rounded">
+                        <div class="small text-muted">待办</div>
+                        <div class="fw-bold text-danger" id="weekPending">0</div>
+                    </div>
+               </div>
+               <div class="col-4">
+                    <div class="text-center p-2 bg-light rounded">
+                        <div class="small text-muted">完成</div>
+                        <div class="fw-bold text-success" id="weekDone">0</div>
+                    </div>
+               </div>
+            </div>
+
+            <div style="height: 200px; width: 100%;">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="mobile-bottom-nav">
+    <div class="nav-item active" onclick="switchMobileTab('calendar')">
+        <i class="fas fa-calendar-alt"></i>
+        <span>日程</span>
+    </div>
+    <div class="nav-item" onclick="switchMobileTab('stats')">
+        <i class="fas fa-chart-bar"></i>
+        <span>数据</span>
     </div>
 </div>
 
 <div class="modal fade" id="dayModal" tabindex="-1" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
-            <div class="modal-header py-2">
+            <div class="modal-header py-2 bg-light">
                 <h5 class="modal-title fw-bold fs-6"><span id="modalDateTitle"></span></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body p-0">
-                <div class="p-2 text-end bg-light border-bottom">
+                <div class="p-2 text-end border-bottom">
                     <button class="btn btn-primary btn-sm rounded-pill px-3" onclick="openEditModal(null, selectedDate)">
-                        <i class="fas fa-plus"></i> 新增
+                        <i class="fas fa-plus"></i> 新增任务
                     </button>
                 </div>
                 <div id="taskListContainer" class="list-group list-group-flush"></div>
@@ -317,44 +385,158 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js" crossorigin="anonymous"></script>
 
 <script>
     // --- 配置 ---
-    // 强制使用 HTTPS，避免 CORS 重定向报错
     const API_BASE = 'https://siyueqi.com/api/tasks'; 
     const LOGIN_API = 'https://siyueqi.com/api/login';
+    const LOCAL_STORAGE_KEY = 'my_tasks_cache';
     
     let currentYear = new Date().getFullYear();
     let currentMonth = new Date().getMonth(); 
     let allTasks = []; 
     let selectedDate = new Date().toISOString().split('T')[0];
-    let chartInstance = null;
+    
+    // Charts
+    let dayChartInstance = null;
+    let weekChartInstance = null;
+    
+    // Timer
     let activeTimer = { taskId: null, startTime: null, intervalId: null };
 
-    // Modal 实例
+    // Modals
     let dayModalInstance = null;
     let editModalInstance = null;
     let loginModalInstance = null;
 
     document.addEventListener('DOMContentLoaded', () => {
         checkLoginState();
+        
+        // Init Modals
         dayModalInstance = new bootstrap.Modal(document.getElementById('dayModal'));
         editModalInstance = new bootstrap.Modal(document.getElementById('editModal'));
         loginModalInstance = new bootstrap.Modal(document.getElementById('loginModal'));
 
+        // Listeners
         document.getElementById('dayModal').addEventListener('hidden.bs.modal', () => {
             stopTimer(true); 
-            loadTasksAndRender(); 
+            // 模态框关闭时，不需要强制全量刷新，只需要更新UI即可，因为Timer已经更新了服务器
+            renderCalendar(currentYear, currentMonth);
+            updateDashboard(selectedDate);
+            updateWeeklyStats(selectedDate);
         });
 
-        loadTasksAndRender();
-        initChart();
+        // 1. 先尝试加载本地缓存，快速渲染
+        loadFromCache();
+        
+        // 2. 然后发起网络请求，比对数据
+        syncWithServer();
+
+        // 3. 设置定时器：每10分钟同步一次
+        setInterval(syncWithServer, 10 * 60 * 1000);
+
+        // Charts Init
+        initDayChart();
+        initWeeklyChart();
+        
+        // Initial Render (UI Init)
+        updateDashboard(selectedDate);
+        updateWeeklyStats(selectedDate);
     });
 
+    // --- 移动端 Tab 切换 ---
+    function switchMobileTab(tab) {
+        // 更新样式
+        document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+        const activeItem = tab === 'calendar' ? 0 : 1;
+        document.querySelectorAll('.mobile-bottom-nav .nav-item')[activeItem].classList.add('active');
+
+        // 切换视图
+        const calendarView = document.getElementById('view-calendar');
+        const statsView = document.getElementById('view-stats');
+
+        if (window.innerWidth <= 768) {
+            if (tab === 'calendar') {
+                calendarView.style.display = 'block';
+                statsView.style.display = 'none';
+            } else {
+                calendarView.style.display = 'none';
+                statsView.style.display = 'flex';
+                // 切换到 Stats 时重新调整图表大小
+                if(weekChartInstance) weekChartInstance.resize();
+                if(dayChartInstance) dayChartInstance.resize();
+            }
+        }
+    }
+
+    // --- 数据同步逻辑 (核心更新) ---
+    
+    function loadFromCache() {
+        const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (cached) {
+            try {
+                allTasks = JSON.parse(cached);
+                console.log('📦 Loaded from Cache:', allTasks.length, 'tasks');
+                renderCalendar(currentYear, currentMonth);
+                updateDashboard(selectedDate);
+                updateWeeklyStats(selectedDate);
+            } catch (e) {
+                console.warn('Cache corrupted');
+            }
+        }
+    }
+
+    async function syncWithServer(isManual = false) {
+        if (isManual) {
+            const icon = document.getElementById('refreshIcon');
+            icon.classList.add('refresh-spin');
+            setTimeout(() => icon.classList.remove('refresh-spin'), 1000);
+        }
+
+        try {
+            const res = await axios.get(API_BASE);
+            const serverData = res.data || [];
+            
+            // 简单比对：将对象转为JSON字符串比较
+            // 注意：如果服务器返回的顺序不稳定，可能需要先排序再比较，但通常DB ID有序
+            const localStr = JSON.stringify(allTasks);
+            const serverStr = JSON.stringify(serverData);
+
+            if (localStr !== serverStr) {
+                console.log('🔄 Data changed, updating UI...');
+                allTasks = serverData;
+                localStorage.setItem(LOCAL_STORAGE_KEY, serverStr);
+                
+                // 刷新 UI
+                renderCalendar(currentYear, currentMonth);
+                updateDashboard(selectedDate);
+                updateWeeklyStats(selectedDate);
+                
+                if (isManual) alert('数据已更新');
+            } else {
+                console.log('✅ Data is up to date.');
+                if (isManual) alert('当前已是最新数据');
+            }
+        } catch (err) {
+            console.error('Sync failed:', err);
+            if (isManual) alert('同步失败，请检查网络');
+        }
+    }
+
+    function forceRefresh() {
+        syncWithServer(true);
+    }
+
     // --- 认证 ---
+    axios.interceptors.request.use(config => {
+        const token = localStorage.getItem('token');
+        if (token) config.headers['token'] = token;
+        return config;
+    });
+
     function checkLoginState() {
         const token = localStorage.getItem('token');
         const authDiv = document.getElementById('authSection');
@@ -375,30 +557,14 @@
                     alert('✅ 登录成功');
                     loginModalInstance.hide();
                     checkLoginState();
-                    loadTasksAndRender();
+                    forceRefresh(); // 登录后强制刷新
                 } else { alert('❌ 登录失败: 无Token'); }
             } else { alert('❌ 登录失败: ' + (res.data.message || '未知')); }
         } catch (err) { alert('❌ 网络错误'); }
     }
     function logout() { localStorage.removeItem('token'); location.reload(); }
 
-    // --- 数据加载 ---
-    axios.interceptors.request.use(config => {
-        const token = localStorage.getItem('token');
-        if (token) config.headers['token'] = token;
-        return config;
-    });
-
-    async function loadTasksAndRender() {
-        try {
-            const res = await axios.get(API_BASE);
-            allTasks = res.data || [];
-            renderCalendar(currentYear, currentMonth);
-            updateDashboard(selectedDate);
-        } catch (err) { console.error(err); }
-    }
-
-    // --- 日历渲染与交互 ---
+    // --- 日历渲染 ---
     function renderCalendar(year, month) {
         const calendarBody = document.getElementById('calendarBody');
         document.getElementById('currentMonthLabel').innerText = `${year}年 ${month + 1}月`;
@@ -417,7 +583,6 @@
             const isToday = todayStr === dateStr;
             const isSelected = selectedDate === dateStr;
 
-            // 移动端最多显示 3 条
             let tasksHtml = tasks.slice(0, 3).map(t => {
                 const style = getTaskStyleClass(t.taskName);
                 return `<div class="task-block ${style} ${t.isCompleted?'completed':''}">${t.taskName}</div>`;
@@ -425,7 +590,6 @@
             
             if(tasks.length > 3) tasksHtml += `<div class="text-center text-muted" style="font-size:0.5rem; line-height:1;">+${tasks.length-3}</div>`;
 
-            // 注意：这里移除了 onclick，改为 data-date 属性
             calendarBody.innerHTML += `
                 <div class="day-cell ${isToday ? 'today' : ''} ${isSelected ? 'active-selected' : ''}" 
                      data-date="${dateStr}">
@@ -434,18 +598,18 @@
                 </div>
             `;
         }
-        
-        // 渲染完毕后，绑定交互事件
         bindGridEvents();
     }
 
-    // --- 新的交互逻辑 (单击/双击/长按) ---
+    // --- 交互逻辑 ---
     function selectDateOnly(dateStr) {
         selectedDate = dateStr;
         document.querySelectorAll('.day-cell').forEach(el => el.classList.remove('active-selected'));
         const newCell = document.querySelector(`.day-cell[data-date='${dateStr}']`);
         if(newCell) newCell.classList.add('active-selected');
+        
         updateDashboard(dateStr);
+        updateWeeklyStats(dateStr);
     }
 
     function bindGridEvents() {
@@ -456,7 +620,6 @@
         let isLongPress = false;
         let startX = 0, startY = 0;
 
-        // 桌面端：双击进入编辑，单击选中
         grid.ondblclick = function(e) {
             const cell = e.target.closest('.day-cell');
             if (cell) {
@@ -470,12 +633,11 @@
             if (isLongPress) { isLongPress = false; return; }
             const cell = e.target.closest('.day-cell');
             if (cell) {
-                const date = cell.dataset.date;
-                selectDateOnly(date);
+                selectDateOnly(cell.dataset.date);
             }
         };
 
-        // 移动端：长按进入编辑
+        // 移动端长按
         grid.ontouchstart = function(e) {
             const cell = e.target.closest('.day-cell');
             if (!cell) return;
@@ -514,7 +676,122 @@
         renderCalendar(currentYear, currentMonth);
     }
 
-    // --- 详情弹窗与编辑 ---
+    // --- 周报表图表逻辑 (New) ---
+    function initWeeklyChart() {
+        const ctx = document.getElementById('weeklyChart').getContext('2d');
+        weekChartInstance = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: '投入时长 (分钟)',
+                    data: [0,0,0,0,0,0,0],
+                    backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                    borderColor: 'rgb(59, 130, 246)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, grid: { display: true, drawBorder: false } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    function updateWeeklyStats(dateStr) {
+        // 1. 计算当前日期所在周的 Mon-Sun
+        const curr = new Date(dateStr);
+        const day = curr.getDay() || 7; // 获取星期几 (1-7)
+        if (day !== 1) curr.setHours(-24 * (day - 1)); // 回退到周一
+        
+        // 生成本周日期数组
+        const weekDates = [];
+        const weekData = [0,0,0,0,0,0,0];
+        let weekTotalMins = 0;
+        let weekPending = 0;
+        let weekDone = 0;
+        
+        // 显示范围 Label
+        const startStr = curr.toISOString().slice(5, 10);
+        
+        for (let i = 0; i < 7; i++) {
+            const dStr = curr.toISOString().slice(0, 10);
+            weekDates.push(dStr);
+            
+            // 聚合当天数据
+            const dayTasks = allTasks.filter(t => t.taskDate === dStr);
+            let dayMins = 0;
+            dayTasks.forEach(t => {
+                dayMins += parseDurationToMinutes(t.timeSpent);
+                if(t.isCompleted) weekDone++; else weekPending++;
+            });
+            weekData[i] = dayMins; // 存入分钟数
+            weekTotalMins += dayMins;
+
+            curr.setDate(curr.getDate() + 1); // Next day
+        }
+        
+        // 更新 UI 文字
+        const endStr = new Date(curr.setDate(curr.getDate() - 1)).toISOString().slice(5, 10);
+        document.getElementById('weekRangeLabel').innerText = `${startStr.replace('-', '/')} - ${endStr.replace('-', '/')}`;
+        document.getElementById('weekTotalTime').innerText = formatMinutes(weekTotalMins);
+        document.getElementById('weekPending').innerText = weekPending;
+        document.getElementById('weekDone').innerText = weekDone;
+
+        // 更新 Chart
+        if (weekChartInstance) {
+            // 将分钟转换为小时（保留一位小数）以便图表更直观，或者直接显示分钟
+            // 这里显示小时
+            weekChartInstance.data.datasets[0].data = weekData.map(m => parseFloat((m/60).toFixed(1)));
+            weekChartInstance.data.datasets[0].label = '投入时长 (小时)';
+            weekChartInstance.update();
+        }
+    }
+
+    // --- 日常 Dashboard ---
+    function initDayChart() {
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        dayChartInstance = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Completed', 'Remaining'],
+                datasets: [{ data: [0, 100], backgroundColor: ['#22c55e', '#e2e8f0'], borderWidth: 0, cutout: '75%' }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false }, tooltip: { enabled: false } }
+            }
+        });
+    }
+
+    function updateDashboard(dateStr) {
+        document.getElementById('statsDateTitle').innerText = `${dateStr.slice(5)} 概览`;
+        const tasks = allTasks.filter(t => t.taskDate === dateStr);
+        const total = tasks.length;
+        const completed = tasks.filter(t => t.isCompleted).length;
+        
+        let totalMinutes = 0;
+        tasks.forEach(t => totalMinutes += parseDurationToMinutes(t.timeSpent));
+        
+        document.getElementById('statTotalTime').innerText = formatMinutes(totalMinutes) || '0m';
+        document.getElementById('statTaskCount').innerText = `${completed}/${total}`;
+        
+        let percent = total === 0 ? 0 : Math.round((completed / total) * 100);
+        document.getElementById('chartPercent').innerText = `${percent}%`;
+        
+        if (dayChartInstance) {
+            dayChartInstance.data.datasets[0].data = total === 0 ? [0, 100] : [completed, total - completed];
+            dayChartInstance.update();
+        }
+    }
+
+    // --- 详情弹窗与计时 ---
     function openDayModal(dateStr) {
         document.getElementById('modalDateTitle').innerText = dateStr;
         const tasks = allTasks.filter(t => t.taskDate === dateStr);
@@ -548,7 +825,6 @@
         dayModalInstance.show();
     }
 
-    // --- 计时器逻辑 ---
     function toggleTimer(id) {
         const btn = document.getElementById(`timer-btn-${id}`);
         if (activeTimer.taskId && activeTimer.taskId !== id) stopTimer();
@@ -581,17 +857,19 @@
             if (task) {
                 const newMins = parseDurationToMinutes(task.timeSpent) + elapsedMins;
                 task.timeSpent = formatMinutes(newMins);
+                // Update UI badge immediately
                 const badge = document.getElementById(`time-display-${id}`);
                 if(badge) badge.innerText = task.timeSpent;
+                
                 try {
                     await axios.put(`${API_BASE}/${id}`, task);
-                    if(!isClosing) loadTasksAndRender();
+                    syncWithServer(); // Sync change
                 } catch (e) { console.error(e); }
             }
         }
     }
 
-    // --- 辅助函数 ---
+    // --- Helpers ---
     function parseDurationToMinutes(str) {
         if (!str) return 0;
         let mins = 0;
@@ -609,42 +887,6 @@
         if (h > 0 && m > 0) return `${h}h ${m}m`;
         if (h > 0) return `${h}h`;
         return `${m}m`;
-    }
-
-    function initChart() {
-        const ctx = document.getElementById('progressChart').getContext('2d');
-        chartInstance = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Completed', 'Remaining'],
-                datasets: [{ data: [0, 100], backgroundColor: ['#22c55e', '#e2e8f0'], borderWidth: 0, cutout: '75%' }]
-            },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false }, tooltip: { enabled: false } }
-            }
-        });
-    }
-
-    function updateDashboard(dateStr) {
-        document.getElementById('statsDateTitle').innerText = `${dateStr.slice(5)} 概览`;
-        const tasks = allTasks.filter(t => t.taskDate === dateStr);
-        const total = tasks.length;
-        const completed = tasks.filter(t => t.isCompleted).length;
-        
-        let totalMinutes = 0;
-        tasks.forEach(t => totalMinutes += parseDurationToMinutes(t.timeSpent));
-        
-        document.getElementById('statTotalTime').innerText = formatMinutes(totalMinutes) || '0m';
-        document.getElementById('statTaskCount').innerText = `${completed}/${total}`;
-        
-        let percent = total === 0 ? 0 : Math.round((completed / total) * 100);
-        document.getElementById('chartPercent').innerText = `${percent}%`;
-        
-        if (chartInstance) {
-            chartInstance.data.datasets[0].data = total === 0 ? [0, 100] : [completed, total - completed];
-            chartInstance.update();
-        }
     }
 
     function getTaskStyleClass(name) {
@@ -687,7 +929,7 @@
             if (id) await axios.put(`${API_BASE}/${id}`, task);
             else await axios.post(API_BASE, task);
             editModalInstance.hide();
-            await loadTasksAndRender();
+            await syncWithServer(); // Re-sync
             if(document.getElementById('dayModal').classList.contains('show') && task.taskDate === selectedDate) {
                 openDayModal(selectedDate);
             }
@@ -700,9 +942,11 @@
         task.isCompleted = !currentStatus;
         try {
             await axios.put(`${API_BASE}/${id}`, task);
+            // Optimistic update locally
             const idx = allTasks.findIndex(t => t.id === id);
             if(idx !== -1) allTasks[idx] = task;
             updateDashboard(selectedDate);
+            updateWeeklyStats(selectedDate);
             renderCalendar(currentYear, currentMonth);
         } catch (err) { console.error(err); }
     }
@@ -711,7 +955,7 @@
         if(!confirm('确定删除？')) return;
         try {
             await axios.delete(`${API_BASE}/${id}`);
-            await loadTasksAndRender();
+            await syncWithServer();
             openDayModal(selectedDate);
         } catch(e) { alert('删除失败'); }
     }
@@ -724,7 +968,7 @@
         try {
             await axios.post(`${API_BASE}/import`, formData, { headers: { 'Content-Type': 'multipart/form-data' }});
             alert('✅ 导入成功');
-            loadTasksAndRender();
+            syncWithServer();
         } catch (e) { alert('导入失败'); }
     }
 </script>
