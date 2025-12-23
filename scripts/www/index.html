@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-CN" data-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🚀 2026 深度攻坚系统 (Pro)</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <style>
         :root {
             /* Light Theme */
-            --primary: #0f172a; 
-            --accent: #2563eb; 
+            --primary: #0f172a;
+            --accent: #2563eb;
             --bg: #f8fafc;
-            --card-bg: #ffffff; 
+            --card-bg: #ffffff;
             --text-main: #334155;
             --text-muted: #64748b;
             --border: #e2e8f0;
@@ -23,15 +24,15 @@
             --grid-line: #e2e8f0;
             --heatmap-empty: #ebedf0;
             --nav-height: 60px;
-            --sidebar-width: 380px; 
+            --sidebar-width: 380px;
         }
 
         [data-theme="dark"] {
             /* Dark Theme */
-            --primary: #f8fafc; 
-            --accent: #60a5fa; 
+            --primary: #f8fafc;
+            --accent: #60a5fa;
             --bg: #0f172a;
-            --card-bg: #1e293b; 
+            --card-bg: #1e293b;
             --text-main: #f1f5f9;
             --text-muted: #94a3b8;
             --border: #334155;
@@ -40,104 +41,233 @@
             --heatmap-empty: #334155;
         }
 
-        *, *::before, *::after { box-sizing: border-box; }
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--bg); color: var(--text-main);
-            margin: 0; min-height: 100vh; padding: 20px; padding-bottom: 80px;
-            overflow-x: hidden; transition: background 0.3s, color 0.3s;
+            background-color: var(--bg);
+            color: var(--text-main);
+            margin: 0;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* --- 布局 Layout --- */
         .main-layout {
-            display: flex; flex-wrap: wrap; gap: 20px;
-            width: 100%; max-width: 1600px; margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
             align-items: flex-start;
         }
 
-        #view-calendar { flex: 1 1 700px; min-width: 0; }
-        #view-stats { 
-            flex: 0 0 var(--sidebar-width); 
-            min-width: 300px; 
-            display: flex; flex-direction: column; gap: 20px; 
+        #view-calendar {
+            flex: 1 1 700px;
+            min-width: 0;
+        }
+
+        #view-stats {
+            flex: 0 0 var(--sidebar-width);
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .card-box {
             background: var(--card-bg);
-            padding: 20px; border-radius: 16px;
+            padding: 20px;
+            border-radius: 16px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             border: 1px solid var(--border);
         }
 
         /* --- Header & Controls --- */
         .header-controls {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 20px; border-bottom: 2px solid var(--accent); padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 15px;
         }
-        h1 { color: var(--text-main); margin: 0; font-size: 1.4rem; font-weight: 800; }
-        .subtitle { 
-            background: rgba(37, 99, 235, 0.1); color: var(--accent); 
-            padding: 3px 10px; border-radius: 15px; font-weight: 600; font-size: 0.75rem; 
+
+        h1 {
+            color: var(--text-main);
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 800;
         }
-        
-        .btn-icon { background: none; border: none; color: var(--text-main); cursor: pointer; font-size: 1.1rem; }
-        .btn-icon:hover { color: var(--accent); }
+
+        .subtitle {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--accent);
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .btn-icon {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-icon:hover {
+            color: var(--accent);
+        }
 
         /* --- Calendar --- */
         .month-header {
-            background: var(--accent); color: white; padding: 10px 15px; border-radius: 12px 12px 0 0;
-            display: flex; justify-content: space-between; align-items: center; font-weight: 700;
+            background: var(--accent);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
         }
-        .month-nav-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 4px 12px; border-radius: 6px; cursor: pointer; }
+
+        .month-nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
 
         .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr);
-            border: 1px solid var(--border); border-top: none; 
-            background: var(--card-bg); border-radius: 0 0 12px 12px;
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border: 1px solid var(--border);
+            border-top: none;
+            background: var(--card-bg);
+            border-radius: 0 0 12px 12px;
         }
-        .day-head { 
-            background: var(--calendar-head-bg); padding: 10px 0; text-align: center; 
-            font-weight: 700; color: var(--text-muted); font-size: 0.8rem;
-            border-right: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line);
+
+        .day-head {
+            background: var(--calendar-head-bg);
+            padding: 10px 0;
+            text-align: center;
+            font-weight: 700;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            border-right: 1px solid var(--grid-line);
+            border-bottom: 1px solid var(--grid-line);
         }
-        .day-cell { 
-            min-height: 120px; padding: 6px; 
-            border-right: 1px solid var(--grid-line); border-bottom: 1px solid var(--grid-line); 
-            cursor: pointer; position: relative; transition: background 0.2s;
-            overflow: hidden; 
+
+        .day-cell {
+            min-height: 120px;
+            padding: 6px;
+            border-right: 1px solid var(--grid-line);
+            border-bottom: 1px solid var(--grid-line);
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+            overflow: hidden;
         }
-        .day-cell.today { background: rgba(37, 99, 235, 0.05); }
-        .day-cell.active-selected { box-shadow: inset 0 0 0 2px var(--accent); background: rgba(37, 99, 235, 0.1); }
-        .day-cell.drag-over { background: rgba(34, 197, 94, 0.2) !important; }
-        
-        .day-head:nth-child(7n), .day-cell:nth-child(7n) { border-right: none; }
-        .date-label { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; display: block; }
+
+        .day-cell.today {
+            background: rgba(37, 99, 235, 0.05);
+        }
+
+        .day-cell.active-selected {
+            box-shadow: inset 0 0 0 2px var(--accent);
+            background: rgba(37, 99, 235, 0.1);
+        }
+
+        .day-cell.drag-over {
+            background: rgba(34, 197, 94, 0.2) !important;
+        }
+
+        .day-head:nth-child(7n),
+        .day-cell:nth-child(7n) {
+            border-right: none;
+        }
+
+        .date-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: block;
+        }
 
         /* --- Task Blocks --- */
         .task-block {
-            padding: 4px 6px; border-radius: 4px; margin-bottom: 3px;
-            font-size: 0.75rem; font-weight: 600; 
-            border-left: 3px solid; cursor: grab;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-            max-width: 100%; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            padding: 4px 6px;
+            border-radius: 4px;
+            margin-bottom: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-left: 3px solid;
+            cursor: grab;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
-        
-        .type-learn { background-color: #2563eb !important; } 
-        .type-proj { background-color: #16a34a !important; } 
-        .type-algo { background-color: #ea580c !important; } 
-        .type-rev { background-color: #9333ea !important; } 
-        
-        [data-theme="dark"] .type-learn { background: #1e3a8a; color: #bfdbfe; }
-        [data-theme="dark"] .type-proj { background: #14532d; color: #bbf7d0; }
-        [data-theme="dark"] .type-algo { background: #7c2d12; color: #fed7aa; }
-        [data-theme="dark"] .type-rev { background: #334155; color: #e2e8f0; }
 
-        .task-block.completed { 
-            background-color: #cbd5e1 !important; opacity: 0.5; 
+        .type-learn {
+            background-color: #2563eb !important;
         }
+
+        .type-proj {
+            background-color: #16a34a !important;
+        }
+
+        .type-algo {
+            background-color: #ea580c !important;
+        }
+
+        .type-rev {
+            background-color: #9333ea !important;
+        }
+
+        [data-theme="dark"] .type-learn {
+            background: #1e3a8a;
+            color: #bfdbfe;
+        }
+
+        [data-theme="dark"] .type-proj {
+            background: #14532d;
+            color: #bbf7d0;
+        }
+
+        [data-theme="dark"] .type-algo {
+            background: #7c2d12;
+            color: #fed7aa;
+        }
+
+        [data-theme="dark"] .type-rev {
+            background: #334155;
+            color: #e2e8f0;
+        }
+
+        .task-block.completed {
+            background-color: #cbd5e1 !important;
+            opacity: 0.5;
+        }
+
         [data-theme="dark"] .task-block.completed {
-            background: #334155 !important; color: #94a3b8 !important; border-left-color: #475569 !important;
+            background: #334155 !important;
+            color: #94a3b8 !important;
+            border-left-color: #475569 !important;
         }
 
         /* --- 每日待办清单样式 (Daily Todo List) --- */
@@ -145,151 +275,304 @@
             background: var(--card-bg);
             border-bottom: 1px solid var(--border);
             padding: 12px 5px;
-            display: flex; align-items: center;
+            display: flex;
+            align-items: center;
             transition: background 0.2s;
         }
-        .mobile-todo-item:hover { background: rgba(0,0,0,0.02); }
-        .mobile-todo-item:last-child { border-bottom: none; }
-        
-        .custom-checkbox {
-            width: 20px; height: 20px; min-width: 20px; margin-right: 12px;
-            border: 2px solid var(--text-muted); border-radius: 6px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
+
+        .mobile-todo-item:hover {
+            background: rgba(0, 0, 0, 0.02);
         }
+
+        .mobile-todo-item:last-child {
+            border-bottom: none;
+        }
+
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            margin-right: 12px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
         .custom-checkbox.checked {
-            background: var(--accent); border-color: var(--accent); color: white;
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
         }
 
         /* --- Charts --- */
-        .chart-container { position: relative; height: 200px; width: 100%; }
+        .chart-container {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
 
         /* --- Heatmap --- */
-        .heatmap-container { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 10px; }
-        .heatmap-box { width: 10px; height: 10px; border-radius: 2px; background: var(--heatmap-empty); }
-        .level-1 { background: #bbf7d0; }
-        .level-2 { background: #4ade80; }
-        .level-3 { background: #22c55e; }
-        .level-4 { background: #15803d; }
-        [data-theme="dark"] .level-1 { background: #064e3b; } 
-        [data-theme="dark"] .level-2 { background: #065f46; }
-        [data-theme="dark"] .level-3 { background: #047857; }
-        [data-theme="dark"] .level-4 { background: #10b981; }
+        .heatmap-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            margin-top: 10px;
+        }
+
+        .heatmap-box {
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            background: var(--heatmap-empty);
+        }
+
+        .level-1 {
+            background: #bbf7d0;
+        }
+
+        .level-2 {
+            background: #4ade80;
+        }
+
+        .level-3 {
+            background: #22c55e;
+        }
+
+        .level-4 {
+            background: #15803d;
+        }
+
+        [data-theme="dark"] .level-1 {
+            background: #064e3b;
+        }
+
+        [data-theme="dark"] .level-2 {
+            background: #065f46;
+        }
+
+        [data-theme="dark"] .level-3 {
+            background: #047857;
+        }
+
+        [data-theme="dark"] .level-4 {
+            background: #10b981;
+        }
 
         /* --- Stat Cards --- */
-        .stat-value { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
-        .stat-label { font-size: 0.75rem; color: var(--text-muted); }
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
 
         /* --- Mobile Adaptations --- */
-        .mobile-bottom-nav { display: none; }
-        
+        .mobile-bottom-nav {
+            display: none;
+        }
+
         @media (max-width: 768px) {
-            body { padding: 10px; padding-bottom: 80px; }
-            .main-layout { display: block; }
-            #view-calendar, #view-stats { width: 100%; margin-bottom: 20px; }
-            #view-stats { display: none; } 
-            
-            .header-controls { flex-direction: column; align-items: flex-start; gap: 10px; position: relative; }
-            .btn-group-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; }
-            
-            .day-cell { 
-                min-height: auto; aspect-ratio: 1/1; padding: 2px;
-                display: flex; flex-wrap: wrap; justify-content: center; align-content: start;
+            body {
+                padding: 10px;
+                padding-bottom: 80px;
+            }
+
+            .main-layout {
+                display: block;
+            }
+
+            #view-calendar,
+            #view-stats {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            #view-stats {
+                display: none;
+            }
+
+            .header-controls {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                position: relative;
+            }
+
+            .btn-group-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+                gap: 5px;
+            }
+
+            .day-cell {
+                min-height: auto;
+                aspect-ratio: 1/1;
+                padding: 2px;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: center;
+                align-content: start;
                 padding-top: 24px;
             }
-            .date-label { position: absolute; top: 4px; left: 50%; transform: translateX(-50%); font-size: 0.75rem; }
-            
-            .task-block { 
-                width: 6px; height: 6px; padding: 0; margin: 1px; border: none; border-radius: 50%; 
-                font-size: 0; display: inline-block; 
+
+            .date-label {
+                position: absolute;
+                top: 4px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 0.75rem;
             }
-            .task-block.completed { background-color: #94a3b8 !important; opacity: 1; }
+
+            .task-block {
+                width: 6px;
+                height: 6px;
+                padding: 0;
+                margin: 1px;
+                border: none;
+                border-radius: 50%;
+                font-size: 0;
+                display: inline-block;
+            }
+
+            .task-block.completed {
+                background-color: #94a3b8 !important;
+                opacity: 1;
+            }
 
             .mobile-bottom-nav {
-                display: flex; position: fixed; bottom: 0; left: 0; right: 0;
-                background: var(--card-bg); height: 60px; border-top: 1px solid var(--border);
-                justify-content: space-around; align-items: center; z-index: 1000;
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                background: var(--card-bg);
+                height: 60px;
+                border-top: 1px solid var(--border);
+                justify-content: space-around;
+                align-items: center;
+                z-index: 1000;
             }
-            .nav-item { flex: 1; text-align: center; color: var(--text-muted); font-size: 0.7rem; padding: 5px; }
-            .nav-item i { display: block; font-size: 1.2rem; margin-bottom: 2px; }
-            .nav-item.active { color: var(--accent); }
+
+            .nav-item {
+                flex: 1;
+                text-align: center;
+                color: var(--text-muted);
+                font-size: 0.7rem;
+                padding: 5px;
+            }
+
+            .nav-item i {
+                display: block;
+                font-size: 1.2rem;
+                margin-bottom: 2px;
+            }
+
+            .nav-item.active {
+                color: var(--accent);
+            }
         }
+
         /* --- 📱 iPad / Tablet Specific Adaptations (768px - 1200px) --- */
         @media screen and (min-width: 768px) and (max-width: 1200px) {
-            
+
             /* 1. 布局调整：在 Pad 上强制把右侧栏放到底部，并优化排列 */
             .main-layout {
-                gap: 15px; /* 减小一点间距以节省空间 */
+                gap: 15px;
+                /* 减小一点间距以节省空间 */
             }
 
             #view-calendar {
-                flex: 1 1 100%; /* 日历占满全宽 */
+                flex: 1 1 100%;
+                /* 日历占满全宽 */
             }
 
             #view-stats {
                 flex: 1 1 100%;
-                display: grid; 
+                display: grid;
                 /* 建立两列网格：左边放数据卡片，右边放待办池 */
-                grid-template-columns: 1fr 1fr; 
+                grid-template-columns: 1fr 1fr;
                 gap: 15px;
             }
 
             /* 2. 让特定卡片跨列或调整顺序 */
             /* "今日状态" 卡片 */
-            #view-stats > .card-box:nth-child(1) {
+            #view-stats>.card-box:nth-child(1) {
                 grid-column: 1 / 2;
             }
+
             /* "数据洞察" 图表卡片 */
-            #view-stats > .card-box:nth-child(2) {
+            #view-stats>.card-box:nth-child(2) {
                 grid-column: 1 / 2;
             }
+
             /* "待办池" 卡片 - 让它更高，占据右侧一整列 */
-            #view-stats > .card-box:nth-child(3) {
+            #view-stats>.card-box:nth-child(3) {
                 grid-column: 2 / 3;
-                grid-row: 1 / 3; /* 跨两行，和左边两个卡片等高 */
+                grid-row: 1 / 3;
+                /* 跨两行，和左边两个卡片等高 */
                 min-height: auto !important;
                 height: 100%;
             }
 
             /* 3. 日历格子高度优化 (Pad 竖屏时格子不能太矮) */
             .day-cell {
-                min-height: 100px; /* 稍微调低一点，避免一屏放不下 */
+                min-height: 100px;
+                /* 稍微调低一点，避免一屏放不下 */
             }
 
             /* 4. 字体与触摸优化 */
             body {
-                font-size: 15px; /* Pad上字稍微大一点点 */
+                font-size: 15px;
+                /* Pad上字稍微大一点点 */
             }
-            
+
             /* 增大点击区域 */
-            .btn, .btn-icon, .task-block {
-                cursor: pointer; /* 提示可点击 */
+            .btn,
+            .btn-icon,
+            .task-block {
+                cursor: pointer;
+                /* 提示可点击 */
             }
-            
+
             /* 任务条样式优化：允许换行或者显示更多内容 */
             .task-block {
                 padding: 5px 8px;
                 font-size: 0.8rem;
-                white-space: nowrap; /* 保持单行，Pad屏幕够宽 */
+                white-space: nowrap;
+                /* 保持单行，Pad屏幕够宽 */
             }
 
             /* 5. 待办清单 (日历下方那个) 样式微调 */
             .mobile-todo-item {
-                padding: 15px 10px; /* 更大的触摸空间 */
+                padding: 15px 10px;
+                /* 更大的触摸空间 */
             }
-            
+
             .custom-checkbox {
-                width: 24px; height: 24px; /* 更大的勾选框 */
+                width: 24px;
+                height: 24px;
+                /* 更大的勾选框 */
             }
         }
 
         /* --- 📱 iPad Portrait (竖屏特别优化) --- */
         @media screen and (min-width: 768px) and (max-width: 900px) {
+
             /* 竖屏时空间较窄，统计区域改为单列堆叠，或者保持紧凑 */
             #view-stats {
-                grid-template-columns: 1fr 1fr; /* 保持双列，但在竖屏iPad上可能需要挤一挤 */
+                grid-template-columns: 1fr 1fr;
+                /* 保持双列，但在竖屏iPad上可能需要挤一挤 */
             }
-            
+
             /* 如果觉得竖屏待办池太窄，可以取消上面的 grid-row 跨行，改为全部单列 */
             /* 解开下面注释可启用单列模式： */
             /*
@@ -299,353 +582,375 @@
         }
     </style>
 </head>
+
 <body>
 
-<div class="main-layout">
-    
-    <div id="view-calendar">
-        <div class="card-box">
-            <div class="header-controls">
-                <div>
-                    <h1 id="appTitle">2026 攻坚</h1>
-                    <div class="subtitle">Time & Data</div>
-                </div>
-                <div class="d-flex align-items-center gap-2">
-                    <button class="btn-icon" onclick="toggleTheme()" title="切换主题"><i class="fas fa-moon" id="themeIcon"></i></button>
-                    <div id="authSection">
-                        <button class="btn btn-dark btn-sm rounded-pill" onclick="openLoginModal()">登录</button>
-                    </div>
-                </div>
-            </div>
+    <div class="main-layout">
 
-            <div class="d-flex gap-2 flex-wrap mb-3 btn-group-actions">
-                <button class="btn btn-sm btn-primary" onclick="openEditModal(null, selectedDate)">
-                    <i class="fas fa-plus"></i> 新任务
-                </button>
-                <button class="btn btn-sm btn-outline-success" onclick="exportData('json')">
-                    <i class="fas fa-file-export"></i> 备份
-                </button>
-                 <button class="btn btn-sm btn-outline-info" onclick="exportData('md')">
-                    <i class="fas fa-file-alt"></i> 周报
-                </button>
-                <input type="file" id="csvFileInput" style="display:none;" accept=".json,.csv,.txt" onchange="uploadCsv()">
-                <button class="btn btn-sm btn-outline-secondary" onclick="document.getElementById('csvFileInput').click()">
-                    <i class="fas fa-file-import"></i> 导入
-                </button>
-            </div>
-
-            <div class="month-section">
-                <div class="month-header">
-                    <button class="month-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                    <span id="currentMonthLabel">...</span>
-                    <button class="month-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
-                </div>
-                <div class="calendar-grid">
-                    <div class="day-head">Mon</div><div class="day-head">Tue</div><div class="day-head">Wed</div>
-                    <div class="day-head">Thu</div><div class="day-head">Fri</div><div class="day-head">Sat</div><div class="day-head">Sun</div>
-                    <div id="calendarBody" style="display: contents;"></div>
-                </div>
-            </div>
-            
-            <div class="mt-3 pt-2">
-                <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+        <div id="view-calendar">
+            <div class="card-box">
+                <div class="header-controls">
                     <div>
-                        <h5 class="m-0 fw-bold fs-6"><i class="fas fa-check-circle text-primary"></i> 待办清单</h5>
-                        <span class="text-muted small" id="dailySelectedDateLabel">Today</span>
+                        <h1 id="appTitle">2026 攻坚</h1>
+                        <div class="subtitle">Time & Data</div>
                     </div>
-                    <button class="btn btn-sm btn-light rounded-circle" onclick="openEditModal(null, selectedDate)">
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn-icon" onclick="toggleTheme()" title="切换主题"><i class="fas fa-moon"
+                                id="themeIcon"></i></button>
+                        <div id="authSection">
+                            <button class="btn btn-dark btn-sm rounded-pill" onclick="openLoginModal()">登录</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 flex-wrap mb-3 btn-group-actions">
+                    <button class="btn btn-sm btn-warning text-dark fw-bold" id="btnSync" onclick="handleManualSync()">
+                        <i class="fas fa-sync-alt" id="iconSync"></i> 同步
+                    </button>
+                    <button class="btn btn-sm btn-primary" onclick="openEditModal(null, selectedDate)">
+                        <i class="fas fa-plus"></i> 新任务
+                    </button>
+                    <button class="btn btn-sm btn-outline-success" onclick="exportData('json')">
+                        <i class="fas fa-file-export"></i> 备份
+                    </button>
+                    <button class="btn btn-sm btn-outline-info" onclick="exportData('md')">
+                        <i class="fas fa-file-alt"></i> 周报
+                    </button>
+                    <input type="file" id="csvFileInput" style="display:none;" accept=".json,.csv,.txt"
+                        onchange="uploadCsv()">
+                    <button class="btn btn-sm btn-outline-secondary"
+                        onclick="document.getElementById('csvFileInput').click()">
+                        <i class="fas fa-file-import"></i> 导入
+                    </button>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-header">
+                        <button class="month-nav-btn" onclick="changeMonth(-1)"><i
+                                class="fas fa-chevron-left"></i></button>
+                        <span id="currentMonthLabel">...</span>
+                        <button class="month-nav-btn" onclick="changeMonth(1)"><i
+                                class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="day-head">Mon</div>
+                        <div class="day-head">Tue</div>
+                        <div class="day-head">Wed</div>
+                        <div class="day-head">Thu</div>
+                        <div class="day-head">Fri</div>
+                        <div class="day-head">Sat</div>
+                        <div class="day-head">Sun</div>
+                        <div id="calendarBody" style="display: contents;"></div>
+                    </div>
+                </div>
+
+                <div class="mt-3 pt-2">
+                    <div class="d-flex justify-content-between align-items-center mb-2 px-1">
+                        <div>
+                            <h5 class="m-0 fw-bold fs-6"><i class="fas fa-check-circle text-primary"></i> 待办清单</h5>
+                            <span class="text-muted small" id="dailySelectedDateLabel">Today</span>
+                        </div>
+                        <button class="btn btn-sm btn-light rounded-circle" onclick="openEditModal(null, selectedDate)">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                    <div id="dailyTodoList">
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-3 border-top d-none d-md-block">
+                    <div class="small fw-bold text-muted mb-2"><i class="fas fa-th"></i> 年度攻坚热力图</div>
+                    <div id="heatmapDesktop" class="heatmap-container"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-stats">
+
+            <div class="card-box">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="m-0 fw-bold fs-6"><i class="fas fa-bolt text-warning"></i> 今日状态</h5>
+                    <span id="statsDateDisplay" class="badge bg-light text-dark">Today</span>
+                </div>
+                <div class="row text-center">
+                    <div class="col-6 border-end">
+                        <div class="stat-value" id="statTotalTime">0h</div>
+                        <div class="stat-label">投入时长</div>
+                    </div>
+                    <div class="col-6">
+                        <div class="stat-value" id="statTaskCount">0/0</div>
+                        <div class="stat-label">完成/总计</div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary w-100 btn-sm" onclick="openPomodoroModal()">
+                        <i class="fas fa-stopwatch"></i> 打开专注计时器
+                    </button>
+                </div>
+            </div>
+
+            <div class="card-box">
+                <h5 class="fw-bold fs-6 mb-3"><i class="fas fa-chart-pie text-info"></i> 数据洞察</h5>
+
+                <div class="mb-4">
+                    <div class="small text-muted fw-bold mb-2">本月完成分布 (小时/天)</div>
+                    <div class="chart-container" style="height: 150px;">
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="border-top pt-3">
+                    <div class="small text-muted fw-bold mb-2">单日任务耗时 (选中日期)</div>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-box flex-grow-1 d-flex flex-column" ondragover="allowDrop(event)"
+                ondrop="dropToBacklog(event)" style="min-height: 300px;">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="m-0 fw-bold fs-6"><i class="fas fa-inbox text-primary"></i> 待办池</h5>
+                    <button class="btn btn-sm btn-link p-0" onclick="openEditModal(null, '')">
                         <i class="fas fa-plus"></i>
                     </button>
                 </div>
-                <div id="dailyTodoList">
+                <div id="backlogList" class="flex-grow-1" style="overflow-y: auto; max-height: 400px;"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mobile-bottom-nav">
+        <div class="nav-item active" onclick="switchMobileTab('calendar')">
+            <i class="fas fa-calendar-alt"></i><span>日程</span>
+        </div>
+        <div class="nav-item" onclick="switchMobileTab('stats')">
+            <i class="fas fa-chart-bar"></i><span>数据统计</span>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dayModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content" style="background: var(--card-bg); color: var(--text-main);">
+                <div class="modal-header py-2 border-bottom-0">
+                    <h5 class="modal-title fw-bold fs-6" id="modalDateTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-0">
+                    <div id="taskListContainer" class="list-group list-group-flush"></div>
+                    <div class="p-3 text-center">
+                        <button class="btn btn-light btn-sm w-100 dashed-border"
+                            onclick="openEditModal(null, selectedDate)">
+                            <i class="fas fa-plus"></i> 新增任务
+                        </button>
                     </div>
-            </div>
-
-            <div class="mt-4 pt-3 border-top d-none d-md-block">
-                <div class="small fw-bold text-muted mb-2"><i class="fas fa-th"></i> 年度攻坚热力图</div>
-                <div id="heatmapDesktop" class="heatmap-container"></div>
-            </div>
-        </div>
-    </div>
-
-    <div id="view-stats">
-        
-        <div class="card-box">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="m-0 fw-bold fs-6"><i class="fas fa-bolt text-warning"></i> 今日状态</h5>
-                <span id="statsDateDisplay" class="badge bg-light text-dark">Today</span>
-            </div>
-            <div class="row text-center">
-                <div class="col-6 border-end">
-                    <div class="stat-value" id="statTotalTime">0h</div>
-                    <div class="stat-label">投入时长</div>
-                </div>
-                <div class="col-6">
-                    <div class="stat-value" id="statTaskCount">0/0</div>
-                    <div class="stat-label">完成/总计</div>
-                </div>
-            </div>
-            <div class="mt-3">
-                 <button class="btn btn-outline-primary w-100 btn-sm" onclick="openPomodoroModal()">
-                    <i class="fas fa-stopwatch"></i> 打开专注计时器
-                 </button>
-            </div>
-        </div>
-
-        <div class="card-box">
-            <h5 class="fw-bold fs-6 mb-3"><i class="fas fa-chart-pie text-info"></i> 数据洞察</h5>
-            
-            <div class="mb-4">
-                <div class="small text-muted fw-bold mb-2">本月完成分布 (小时/天)</div>
-                <div class="chart-container" style="height: 150px;">
-                    <canvas id="barChart"></canvas>
-                </div>
-            </div>
-
-            <div class="border-top pt-3">
-                <div class="small text-muted fw-bold mb-2">单日任务耗时 (选中日期)</div>
-                <div class="chart-container" style="height: 200px;">
-                    <canvas id="pieChart"></canvas>
-                </div>
-            </div>
-        </div>
-
-        <div class="card-box flex-grow-1 d-flex flex-column" 
-             ondragover="allowDrop(event)" ondrop="dropToBacklog(event)" style="min-height: 300px;">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h5 class="m-0 fw-bold fs-6"><i class="fas fa-inbox text-primary"></i> 待办池</h5>
-                <button class="btn btn-sm btn-link p-0" onclick="openEditModal(null, '')">
-                    <i class="fas fa-plus"></i>
-                </button>
-            </div>
-            <div id="backlogList" class="flex-grow-1" style="overflow-y: auto; max-height: 400px;"></div>
-        </div>
-        
-    </div>
-</div>
-
-<div class="mobile-bottom-nav">
-    <div class="nav-item active" onclick="switchMobileTab('calendar')">
-        <i class="fas fa-calendar-alt"></i><span>日程</span>
-    </div>
-    <div class="nav-item" onclick="switchMobileTab('stats')">
-        <i class="fas fa-chart-bar"></i><span>数据统计</span>
-    </div>
-</div>
-
-<div class="modal fade" id="dayModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content" style="background: var(--card-bg); color: var(--text-main);">
-            <div class="modal-header py-2 border-bottom-0">
-                <h5 class="modal-title fw-bold fs-6" id="modalDateTitle"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body p-0">
-                <div id="taskListContainer" class="list-group list-group-flush"></div>
-                <div class="p-3 text-center">
-                    <button class="btn btn-light btn-sm w-100 dashed-border" onclick="openEditModal(null, selectedDate)">
-                        <i class="fas fa-plus"></i> 新增任务
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="background: var(--card-bg); color: var(--text-main);">
-            <div class="modal-header py-2">
-                <h5 class="modal-title fw-bold fs-6">编辑任务</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <form id="taskForm">
-                    <input type="hidden" id="taskId">
-                    <div class="mb-2">
-                        <label class="small fw-bold">日期</label>
-                        <input type="date" class="form-control" id="taskDate">
-                    </div>
-                    <div class="mb-2">
-                        <label class="small fw-bold">内容</label>
-                        <input type="text" class="form-control" id="taskName" placeholder="例如：LC: 动态规划" required>
-                    </div>
-                    <div class="mb-2">
-                        <label class="small fw-bold">耗时 (例如 1h 30m)</label>
-                        <input type="text" class="form-control" id="timeSpent">
-                    </div>
-                    <div class="mb-2">
-                        <label class="small fw-bold">备注</label>
-                        <textarea class="form-control" id="taskDescription" rows="2"></textarea>
-                    </div>
-                    <div class="form-check mt-3">
-                        <input class="form-check-input" type="checkbox" id="isCompleted">
-                        <label class="form-check-label small">标记为完成</label>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer border-0 py-2">
-                <button type="button" class="btn btn-sm btn-outline-danger me-auto" onclick="deleteTaskFromEdit()">删除</button>
-                <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill" onclick="saveTask()">保存</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="pomodoroModal" tabindex="-1" data-bs-backdrop="static">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content text-center p-3" style="background: var(--card-bg); color: var(--text-main);">
-            <div class="d-flex justify-content-between mb-3">
-                <h5 class="fw-bold m-0">专注计时</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <ul class="nav nav-pills nav-fill mb-3" id="timerTabs">
-                <li class="nav-item"><button class="nav-link active py-1 small" id="tab-stopwatch" onclick="switchTimerMode('stopwatch')">秒表</button></li>
-                <li class="nav-item"><button class="nav-link py-1 small" id="tab-pomo" onclick="switchTimerMode('pomo')">番茄钟</button></li>
-            </ul>
-            <div class="display-1 fw-bold my-3" id="timerDisplay">00:00</div>
-            <div class="text-muted small mb-3" id="timerStatus">准备就绪</div>
-            <div class="d-flex gap-2 justify-content-center">
-                <button class="btn btn-primary rounded-pill px-4" id="timerActionBtn" onclick="toggleTimerState()">开始</button>
-                <button class="btn btn-outline-secondary rounded-pill px-3" onclick="resetTimer()">重置</button>
-            </div>
-            <div class="mt-3 text-start">
-                <label class="small text-muted">关联任务 (可选)</label>
-                <select class="form-select form-select-sm" id="timerTaskSelect"><option value="">-- 不关联 --</option></select>
+    <div class="modal fade" id="editModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="background: var(--card-bg); color: var(--text-main);">
+                <div class="modal-header py-2">
+                    <h5 class="modal-title fw-bold fs-6">编辑任务</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="taskForm">
+                        <input type="hidden" id="taskId">
+                        <div class="mb-2">
+                            <label class="small fw-bold">日期</label>
+                            <input type="date" class="form-control" id="taskDate">
+                        </div>
+                        <div class="mb-2">
+                            <label class="small fw-bold">内容</label>
+                            <input type="text" class="form-control" id="taskName" placeholder="例如：LC: 动态规划" required>
+                        </div>
+                        <div class="mb-2">
+                            <label class="small fw-bold">耗时 (例如 1h 30m)</label>
+                            <input type="text" class="form-control" id="timeSpent">
+                        </div>
+                        <div class="mb-2">
+                            <label class="small fw-bold">备注</label>
+                            <textarea class="form-control" id="taskDescription" rows="2"></textarea>
+                        </div>
+                        <div class="form-check mt-3">
+                            <input class="form-check-input" type="checkbox" id="isCompleted">
+                            <label class="form-check-label small">标记为完成</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer border-0 py-2">
+                    <button type="button" class="btn btn-sm btn-outline-danger me-auto"
+                        onclick="deleteTaskFromEdit()">删除</button>
+                    <button type="button" class="btn btn-primary btn-sm px-4 rounded-pill"
+                        onclick="saveTask()">保存</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="modal fade" id="loginModal" tabindex="-1">
-    <div class="modal-dialog modal-sm modal-dialog-centered">
-        <div class="modal-content p-3">
-            <h5 class="fw-bold text-center mb-3">登录</h5>
-            <input type="text" id="username" class="form-control mb-2" placeholder="User">
-            <input type="password" id="password" class="form-control mb-3" placeholder="Pass">
-            <button class="btn btn-dark w-100" onclick="handleLogin()">Login</button>
+    <div class="modal fade" id="pomodoroModal" tabindex="-1" data-bs-backdrop="static">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content text-center p-3" style="background: var(--card-bg); color: var(--text-main);">
+                <div class="d-flex justify-content-between mb-3">
+                    <h5 class="fw-bold m-0">专注计时</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <ul class="nav nav-pills nav-fill mb-3" id="timerTabs">
+                    <li class="nav-item"><button class="nav-link active py-1 small" id="tab-stopwatch"
+                            onclick="switchTimerMode('stopwatch')">秒表</button></li>
+                    <li class="nav-item"><button class="nav-link py-1 small" id="tab-pomo"
+                            onclick="switchTimerMode('pomo')">番茄钟</button></li>
+                </ul>
+                <div class="display-1 fw-bold my-3" id="timerDisplay">00:00</div>
+                <div class="text-muted small mb-3" id="timerStatus">准备就绪</div>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button class="btn btn-primary rounded-pill px-4" id="timerActionBtn"
+                        onclick="toggleTimerState()">开始</button>
+                    <button class="btn btn-outline-secondary rounded-pill px-3" onclick="resetTimer()">重置</button>
+                </div>
+                <div class="mt-3 text-start">
+                    <label class="small text-muted">关联任务 (可选)</label>
+                    <select class="form-select form-select-sm" id="timerTaskSelect">
+                        <option value="">-- 不关联 --</option>
+                    </select>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content p-3">
+                <h5 class="fw-bold text-center mb-3">登录</h5>
+                <input type="text" id="username" class="form-control mb-2" placeholder="User">
+                <input type="password" id="password" class="form-control mb-3" placeholder="Pass">
+                <button class="btn btn-dark w-100" onclick="handleLogin()">Login</button>
+            </div>
+        </div>
+    </div>
 
-<script>
-    // --- Global Config & State ---
-    const API_BASE = 'https://siyueqi.com/api/tasks'; 
-    const LOGIN_API = 'https://siyueqi.com/api/login';
-    const LOCAL_STORAGE_KEY = 'my_tasks_cache_v2';
-    
-    let currentYear = new Date().getFullYear();
-    let currentMonth = new Date().getMonth(); 
-    let allTasks = []; 
-    let selectedDate = new Date().toISOString().split('T')[0];
-    
-    // Timer State
-    let timerState = {
-        mode: 'stopwatch', running: false, startTime: null, elapsed: 0, interval: null,
-        pomoPhase: 'work', pomoWorkMin: 25, pomoBreakMin: 5
-    };
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    // Charts instances
-    let barChartInstance = null;
-    let pieChartInstance = null;
+    <script>
+        // --- Global Config & State ---
+        const API_BASE = 'https://siyueqi.com/api/tasks';
+        const LOGIN_API = 'https://siyueqi.com/api/login';
+        const LOCAL_STORAGE_KEY = 'my_tasks_cache_v2';
 
-    // Bootstrap Modals
-    let modals = {};
-    
-    // Axios Config
-    axios.interceptors.request.use(config => {
-        const token = localStorage.getItem('token');
-        if (token) config.headers['token'] = token;
-        return config;
-    }, error => Promise.reject(error));
-    
-    axios.interceptors.response.use(res => res, error => {
-        if (error.response && error.response.status === 401) {
-            localStorage.removeItem('token'); checkLoginState();
-        }
-        return Promise.reject(error);
-    });
+        let currentYear = new Date().getFullYear();
+        let currentMonth = new Date().getMonth();
+        let allTasks = [];
+        let selectedDate = new Date().toISOString().split('T')[0];
 
-    // --- Init ---
-    document.addEventListener('DOMContentLoaded', () => {
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+        // Timer State
+        let timerState = {
+            mode: 'stopwatch', running: false, startTime: null, elapsed: 0, interval: null,
+            pomoPhase: 'work', pomoWorkMin: 25, pomoBreakMin: 5
+        };
 
-        modals.day = new bootstrap.Modal(document.getElementById('dayModal'));
-        modals.edit = new bootstrap.Modal(document.getElementById('editModal'));
-        modals.pomo = new bootstrap.Modal(document.getElementById('pomodoroModal'));
-        modals.login = new bootstrap.Modal(document.getElementById('loginModal'));
-        
-        document.getElementById('dayModal').addEventListener('hidden.bs.modal', () => {
-            renderCalendar(currentYear, currentMonth); updateStats();
+        // Charts instances
+        let barChartInstance = null;
+        let pieChartInstance = null;
+
+        // Bootstrap Modals
+        let modals = {};
+
+        // Axios Config
+        axios.interceptors.request.use(config => {
+            const token = localStorage.getItem('token');
+            if (token) config.headers['token'] = token;
+            return config;
+        }, error => Promise.reject(error));
+
+        axios.interceptors.response.use(res => res, error => {
+            if (error.response && error.response.status === 401) {
+                localStorage.removeItem('token'); checkLoginState();
+            }
+            return Promise.reject(error);
         });
 
-        loadFromCache();
-        checkLoginState();
-        
-        // Initial Renders
-        renderCalendar(currentYear, currentMonth);
-        renderBacklog();
-        renderHeatmap();
-        updateStats(); // Updates charts
-        updateDailyTodoList(); // Initial render for today
-        
-        syncWithServer();
-        setInterval(syncWithServer, 5 * 60 * 1000);
-    });
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
 
-    // --- 🌗 Dark Mode ---
-    function toggleTheme() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'light' ? 'dark' : 'light';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        updateThemeIcon(next);
-        renderStatsCharts(); 
-        renderHeatmap();
-    }
-    function updateThemeIcon(theme) {
-        document.getElementById('themeIcon').className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
-    }
+            modals.day = new bootstrap.Modal(document.getElementById('dayModal'));
+            modals.edit = new bootstrap.Modal(document.getElementById('editModal'));
+            modals.pomo = new bootstrap.Modal(document.getElementById('pomodoroModal'));
+            modals.login = new bootstrap.Modal(document.getElementById('loginModal'));
 
-    // --- 📱 Mobile Tabs ---
-    function switchMobileTab(tab) {
-        document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
-        if(tab === 'calendar') {
-            document.querySelector('.mobile-bottom-nav .nav-item:nth-child(1)').classList.add('active');
-            document.getElementById('view-calendar').style.display = 'block';
-            document.getElementById('view-stats').style.display = 'none';
-        } else {
-            document.querySelector('.mobile-bottom-nav .nav-item:nth-child(2)').classList.add('active');
-            document.getElementById('view-calendar').style.display = 'none';
-            document.getElementById('view-stats').style.display = 'flex';
-            renderStatsCharts(); 
+            document.getElementById('dayModal').addEventListener('hidden.bs.modal', () => {
+                renderCalendar(currentYear, currentMonth); updateStats();
+            });
+
+            loadFromCache();
+            checkLoginState();
+
+            // Initial Renders
+            renderCalendar(currentYear, currentMonth);
+            renderBacklog();
+            renderHeatmap();
+            updateStats(); // Updates charts
+            updateDailyTodoList(); // Initial render for today
+
+            syncWithServer();
+            setInterval(syncWithServer, 5 * 60 * 1000);
+        });
+
+        // --- 🌗 Dark Mode ---
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'light' ? 'dark' : 'light';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            updateThemeIcon(next);
+            renderStatsCharts();
+            renderHeatmap();
         }
-    }
+        function updateThemeIcon(theme) {
+            document.getElementById('themeIcon').className = theme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+        }
 
-    // --- 🔥 Daily Todo List Logic ---
-    function updateDailyTodoList() {
-        const container = document.getElementById('dailyTodoList');
-        const label = document.getElementById('dailySelectedDateLabel');
-        
-        if (!container || !label) return;
+        // --- 📱 Mobile Tabs ---
+        function switchMobileTab(tab) {
+            document.querySelectorAll('.mobile-bottom-nav .nav-item').forEach(el => el.classList.remove('active'));
+            if (tab === 'calendar') {
+                document.querySelector('.mobile-bottom-nav .nav-item:nth-child(1)').classList.add('active');
+                document.getElementById('view-calendar').style.display = 'block';
+                document.getElementById('view-stats').style.display = 'none';
+            } else {
+                document.querySelector('.mobile-bottom-nav .nav-item:nth-child(2)').classList.add('active');
+                document.getElementById('view-calendar').style.display = 'none';
+                document.getElementById('view-stats').style.display = 'flex';
+                renderStatsCharts();
+            }
+        }
 
-        label.innerText = selectedDate === new Date().toISOString().slice(0,10) ? 'Today' : selectedDate;
+        // --- 🔥 Daily Todo List Logic ---
+        function updateDailyTodoList() {
+            const container = document.getElementById('dailyTodoList');
+            const label = document.getElementById('dailySelectedDateLabel');
 
-        const tasks = allTasks.filter(t => t.taskDate === selectedDate);
-        
-        if (tasks.length === 0) {
-            container.innerHTML = `<div class="text-center text-muted py-3 small" style="border: 1px dashed var(--border); border-radius: 8px;">
+            if (!container || !label) return;
+
+            label.innerText = selectedDate === new Date().toISOString().slice(0, 10) ? 'Today' : selectedDate;
+
+            const tasks = allTasks.filter(t => t.taskDate === selectedDate);
+
+            if (tasks.length === 0) {
+                container.innerHTML = `<div class="text-center text-muted py-3 small" style="border: 1px dashed var(--border); border-radius: 8px;">
                 <i class="fas fa-coffee mb-1"></i><br>本日暂无安排<br>点击 + 添加
             </div>`;
-            return;
-        }
+                return;
+            }
 
-        container.innerHTML = tasks.map(t => `
+            container.innerHTML = tasks.map(t => `
             <div class="mobile-todo-item" style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 6px;">
                 <div class="custom-checkbox ${t.isCompleted ? 'checked' : ''}" onclick="toggleComplete(${t.id}, ${t.isCompleted})">
                     ${t.isCompleted ? '<i class="fas fa-check" style="font-size: 10px;"></i>' : ''}
@@ -661,540 +966,637 @@
                 </div>
             </div>
         `).join('');
-    }
-
-    // --- 🔥 Charts Logic (Daily breakdown) ---
-    function renderStatsCharts() {
-        const ctxBar = document.getElementById('barChart');
-        const ctxPie = document.getElementById('pieChart');
-        if (!ctxBar || !ctxPie) return;
-
-        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-        const textColor = isDark ? '#94a3b8' : '#64748b';
-        const gridColor = isDark ? '#334155' : '#e2e8f0';
-
-        // 1. Bar Chart: 本月每天的总时长
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-        const barLabels = [];
-        const dataHours = [];
-        
-        for(let d=1; d<=daysInMonth; d++) {
-            const dStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-            barLabels.push(d);
-            const dayTasks = allTasks.filter(t => t.taskDate === dStr && t.isCompleted);
-            let mins = 0;
-            dayTasks.forEach(t => mins += parseDurationToMinutes(t.timeSpent));
-            dataHours.push((mins / 60).toFixed(1));
         }
 
-        if (barChartInstance) barChartInstance.destroy();
-        barChartInstance = new Chart(ctxBar, {
-            type: 'bar',
-            data: {
-                labels: barLabels,
-                datasets: [{
-                    label: '投入时长 (小时)',
-                    data: dataHours,
-                    backgroundColor: isDark ? '#60a5fa' : '#2563eb',
-                    borderRadius: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: textColor, font: {size: 8} } },
-                    y: { grid: { color: gridColor }, ticks: { color: textColor } }
-                }
+        // --- 🔥 Charts Logic (Daily breakdown) ---
+        function renderStatsCharts() {
+            const ctxBar = document.getElementById('barChart');
+            const ctxPie = document.getElementById('pieChart');
+            if (!ctxBar || !ctxPie) return;
+
+            const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+            const textColor = isDark ? '#94a3b8' : '#64748b';
+            const gridColor = isDark ? '#334155' : '#e2e8f0';
+
+            // 1. Bar Chart: 本月每天的总时长
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const barLabels = [];
+            const dataHours = [];
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                barLabels.push(d);
+                const dayTasks = allTasks.filter(t => t.taskDate === dStr && t.isCompleted);
+                let mins = 0;
+                dayTasks.forEach(t => mins += parseDurationToMinutes(t.timeSpent));
+                dataHours.push((mins / 60).toFixed(1));
             }
-        });
 
-        // 2. Pie Chart: 选中日期的任务名称耗时分布
-        const dailyTasks = allTasks.filter(t => t.taskDate === selectedDate && t.isCompleted);
-        const taskData = {};
-        
-        dailyTasks.forEach(t => {
-            const mins = parseDurationToMinutes(t.timeSpent);
-            if (mins > 0) taskData[t.taskName] = (taskData[t.taskName] || 0) + mins;
-        });
-
-        const pieLabels = Object.keys(taskData);
-        const pieValues = Object.values(taskData);
-
-        const colorsPalette = ['#2563eb', '#16a34a', '#ea580c', '#9333ea', '#db2777', '#0891b2', '#ca8a04', '#4b5563', '#ef4444', '#84cc16'];
-        const backgroundColors = pieLabels.map((_, i) => colorsPalette[i % colorsPalette.length]);
-
-        if (pieChartInstance) pieChartInstance.destroy();
-
-        if (pieValues.length === 0) {
-             pieChartInstance = new Chart(ctxPie, {
-                type: 'doughnut',
-                data: { labels: ['暂无数据'], datasets: [{ data: [1], backgroundColor: [isDark ? '#334155' : '#e2e8f0'], borderWidth: 0 }] },
-                options: { 
-                    events: [],
-                    plugins: { 
-                        legend: { display: false },
-                        title: { display: true, text: `${selectedDate} 无完成记录`, color: textColor, font: { size: 11 } }
-                    } 
-                }
-            });
-        } else {
-            pieChartInstance = new Chart(ctxPie, {
-                type: 'doughnut',
+            if (barChartInstance) barChartInstance.destroy();
+            barChartInstance = new Chart(ctxBar, {
+                type: 'bar',
                 data: {
-                    labels: pieLabels,
+                    labels: barLabels,
                     datasets: [{
-                        data: pieValues,
-                        backgroundColor: backgroundColors,
-                        borderColor: isDark ? '#1e293b' : '#ffffff',
-                        borderWidth: 1
+                        label: '投入时长 (小时)',
+                        data: dataHours,
+                        backgroundColor: isDark ? '#60a5fa' : '#2563eb',
+                        borderRadius: 2
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { 
-                        legend: { position: 'right', labels: { color: textColor, font: {size: 10}, boxWidth: 10 } },
-                        title: {
-                            display: true,
-                            text: `📅 ${selectedDate} 任务耗时分布`,
-                            color: textColor,
-                            font: { size: 12, weight: 'bold' },
-                            padding: { bottom: 10 }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const val = context.raw;
-                                    const total = context.chart._metasets[context.datasetIndex].total;
-                                    return ` ${context.label}: ${formatMinutes(val)} (${((val/total)*100).toFixed(1)}%)`;
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: textColor, font: { size: 8 } } },
+                        y: { grid: { color: gridColor }, ticks: { color: textColor } }
+                    }
+                }
+            });
+
+            // 2. Pie Chart: 选中日期的任务名称耗时分布
+            const dailyTasks = allTasks.filter(t => t.taskDate === selectedDate && t.isCompleted);
+            const taskData = {};
+
+            dailyTasks.forEach(t => {
+                const mins = parseDurationToMinutes(t.timeSpent);
+                if (mins > 0) taskData[t.taskName] = (taskData[t.taskName] || 0) + mins;
+            });
+
+            const pieLabels = Object.keys(taskData);
+            const pieValues = Object.values(taskData);
+
+            const colorsPalette = ['#2563eb', '#16a34a', '#ea580c', '#9333ea', '#db2777', '#0891b2', '#ca8a04', '#4b5563', '#ef4444', '#84cc16'];
+            const backgroundColors = pieLabels.map((_, i) => colorsPalette[i % colorsPalette.length]);
+
+            if (pieChartInstance) pieChartInstance.destroy();
+
+            if (pieValues.length === 0) {
+                pieChartInstance = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: { labels: ['暂无数据'], datasets: [{ data: [1], backgroundColor: [isDark ? '#334155' : '#e2e8f0'], borderWidth: 0 }] },
+                    options: {
+                        events: [],
+                        plugins: {
+                            legend: { display: false },
+                            title: { display: true, text: `${selectedDate} 无完成记录`, color: textColor, font: { size: 11 } }
+                        }
+                    }
+                });
+            } else {
+                pieChartInstance = new Chart(ctxPie, {
+                    type: 'doughnut',
+                    data: {
+                        labels: pieLabels,
+                        datasets: [{
+                            data: pieValues,
+                            backgroundColor: backgroundColors,
+                            borderColor: isDark ? '#1e293b' : '#ffffff',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'right', labels: { color: textColor, font: { size: 10 }, boxWidth: 10 } },
+                            title: {
+                                display: true,
+                                text: `📅 ${selectedDate} 任务耗时分布`,
+                                color: textColor,
+                                font: { size: 12, weight: 'bold' },
+                                padding: { bottom: 10 }
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function (context) {
+                                        const val = context.raw;
+                                        const total = context.chart._metasets[context.datasetIndex].total;
+                                        return ` ${context.label}: ${formatMinutes(val)} (${((val / total) * 100).toFixed(1)}%)`;
+                                    }
                                 }
                             }
                         }
                     }
-                }
-            });
+                });
+            }
         }
-    }
 
-    // --- 📅 Calendar & Rendering ---
-    function renderCalendar(year, month) {
-        const calendarBody = document.getElementById('calendarBody');
-        document.getElementById('currentMonthLabel').innerText = `${year}年 ${month + 1}月`;
-        calendarBody.innerHTML = '';
+        // --- 📅 Calendar & Rendering ---
+        function renderCalendar(year, month) {
+            const calendarBody = document.getElementById('calendarBody');
+            document.getElementById('currentMonthLabel').innerText = `${year}年 ${month + 1}月`;
+            calendarBody.innerHTML = '';
 
-        let firstDay = new Date(year, month, 1).getDay();
-        if (firstDay === 0) firstDay = 7;
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        const todayStr = new Date().toISOString().slice(0, 10);
+            let firstDay = new Date(year, month, 1).getDay();
+            if (firstDay === 0) firstDay = 7;
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const todayStr = new Date().toISOString().slice(0, 10);
 
-        for (let i = 1; i < firstDay; i++) calendarBody.innerHTML += `<div class="day-cell" style="background:var(--bg); pointer-events:none;"></div>`;
+            for (let i = 1; i < firstDay; i++) calendarBody.innerHTML += `<div class="day-cell" style="background:var(--bg); pointer-events:none;"></div>`;
 
-        for (let day = 1; day <= daysInMonth; day++) {
-            const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-            const tasks = allTasks.filter(t => t.taskDate === dateStr);
-            const isToday = todayStr === dateStr;
-            const isSelected = selectedDate === dateStr;
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                const tasks = allTasks.filter(t => t.taskDate === dateStr);
+                const isToday = todayStr === dateStr;
+                const isSelected = selectedDate === dateStr;
 
-            let tasksHtml = tasks.slice(0, 3).map(t => {
-                const style = getTaskStyleClass(t.taskName);
-                return `<div class="task-block ${style} ${t.isCompleted?'completed':''}" draggable="true" ondragstart="dragStart(event, ${t.id})">${t.taskName}</div>`;
-            }).join('');
-            if(tasks.length > 3) tasksHtml += `<div class="text-center text-muted" style="font-size:0.6rem;">+${tasks.length-3}</div>`;
+                let tasksHtml = tasks.slice(0, 3).map(t => {
+                    const style = getTaskStyleClass(t.taskName);
+                    return `<div class="task-block ${style} ${t.isCompleted ? 'completed' : ''}" draggable="true" ondragstart="dragStart(event, ${t.id})">${t.taskName}</div>`;
+                }).join('');
+                if (tasks.length > 3) tasksHtml += `<div class="text-center text-muted" style="font-size:0.6rem;">+${tasks.length - 3}</div>`;
 
-            calendarBody.innerHTML += `
+                calendarBody.innerHTML += `
                 <div class="day-cell ${isToday ? 'today' : ''} ${isSelected ? 'active-selected' : ''}" 
                      onclick="handleDayClick('${dateStr}')"
                      ondragover="allowDrop(event)" ondragleave="leaveDrop(event)" ondrop="dropOnCalendar(event, '${dateStr}')">
                     <span class="date-label">${day}</span>
                     ${tasksHtml}
                 </div>`;
+            }
         }
-    }
 
-    function handleDayClick(dateStr) {
-        selectedDate = dateStr;
-        document.querySelectorAll('.day-cell').forEach(el => el.classList.remove('active-selected'));
-        renderCalendar(currentYear, currentMonth); 
-        
-        // 🔥 Critical Update: Update list and charts on click
-        updateDailyTodoList();
-        renderStatsCharts(); 
+        function handleDayClick(dateStr) {
+            selectedDate = dateStr;
+            document.querySelectorAll('.day-cell').forEach(el => el.classList.remove('active-selected'));
+            renderCalendar(currentYear, currentMonth);
 
-        if (window.innerWidth > 768) {
-            // Optional: You can remove this line if you don't want the modal popup on Desktop
-            // openDayModal(dateStr); 
+            // 🔥 Critical Update: Update list and charts on click
+            updateDailyTodoList();
+            renderStatsCharts();
+
+            if (window.innerWidth > 768) {
+                // Optional: You can remove this line if you don't want the modal popup on Desktop
+                // openDayModal(dateStr); 
+            }
         }
-    }
-    
-    function changeMonth(step) {
-        currentMonth += step;
-        if (currentMonth > 11) { currentMonth = 0; currentYear++; }
-        if (currentMonth < 0) { currentMonth = 11; currentYear--; }
-        renderCalendar(currentYear, currentMonth);
-        renderStatsCharts();
-    }
 
-    function openDayModal(dateStr) {
-        document.getElementById('modalDateTitle').innerText = dateStr;
-        const tasks = allTasks.filter(t => t.taskDate === dateStr);
-        const container = document.getElementById('taskListContainer');
-        container.innerHTML = tasks.length ? tasks.map(t => `
+        function changeMonth(step) {
+            currentMonth += step;
+            if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+            if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+            renderCalendar(currentYear, currentMonth);
+            renderStatsCharts();
+        }
+
+        function openDayModal(dateStr) {
+            document.getElementById('modalDateTitle').innerText = dateStr;
+            const tasks = allTasks.filter(t => t.taskDate === dateStr);
+            const container = document.getElementById('taskListContainer');
+            container.innerHTML = tasks.length ? tasks.map(t => `
             <div class="list-group-item d-flex justify-content-between align-items-center bg-transparent">
                 <div>
-                    <input type="checkbox" class="form-check-input me-2" ${t.isCompleted?'checked':''} onchange="toggleComplete(${t.id}, ${t.isCompleted})">
-                    <span class="${t.isCompleted?'text-decoration-line-through text-muted':''}">${t.taskName}</span>
+                    <input type="checkbox" class="form-check-input me-2" ${t.isCompleted ? 'checked' : ''} onchange="toggleComplete(${t.id}, ${t.isCompleted})">
+                    <span class="${t.isCompleted ? 'text-decoration-line-through text-muted' : ''}">${t.taskName}</span>
                     <span class="badge bg-secondary ms-2 small">${t.timeSpent || '0m'}</span>
                 </div>
                 <button class="btn btn-sm btn-link text-muted" onclick="openEditModal(${t.id})"><i class="fas fa-cog"></i></button>
             </div>
         `).join('') : `<div class="p-4 text-center text-muted">暂无任务</div>`;
-        modals.day.show();
-    }
-
-    // --- CRUD ---
-    function openEditModal(id = null, datePrefill = '') {
-        document.getElementById('taskForm').reset();
-        document.getElementById('taskDate').value = datePrefill;
-        document.getElementById('taskId').value = '';
-        if(id) {
-            const task = allTasks.find(t => t.id == id);
-            document.getElementById('taskId').value = task.id;
-            document.getElementById('taskName').value = task.taskName;
-            document.getElementById('timeSpent').value = task.timeSpent;
-            document.getElementById('taskDescription').value = task.taskDescription;
-            document.getElementById('taskDate').value = task.taskDate || '';
-            document.getElementById('isCompleted').checked = task.isCompleted;
+            modals.day.show();
         }
-        modals.edit.show();
-        modals.day.hide();
-    }
 
-    async function saveTask() {
-        const id = document.getElementById('taskId').value;
-        const task = {
-            id: id ? Number(id) : Date.now(),
-            taskName: document.getElementById('taskName').value,
-            timeSpent: document.getElementById('timeSpent').value,
-            taskDescription: document.getElementById('taskDescription').value,
-            isCompleted: document.getElementById('isCompleted').checked,
-            taskDate: document.getElementById('taskDate').value || null
-        };
-        
-        if(!task.taskName) { alert("写点什么吧"); return; }
-        if(task.isCompleted && !task.completedAt) task.completedAt = Date.now(); // Record timestamp
+        // --- CRUD ---
+        function openEditModal(id = null, datePrefill = '') {
+            document.getElementById('taskForm').reset();
+            document.getElementById('taskDate').value = datePrefill;
+            document.getElementById('taskId').value = '';
+            if (id) {
+                const task = allTasks.find(t => t.id == id);
+                document.getElementById('taskId').value = task.id;
+                document.getElementById('taskName').value = task.taskName;
+                document.getElementById('timeSpent').value = task.timeSpent;
+                document.getElementById('taskDescription').value = task.taskDescription;
+                document.getElementById('taskDate').value = task.taskDate || '';
+                document.getElementById('isCompleted').checked = task.isCompleted;
+            }
+            modals.edit.show();
+            modals.day.hide();
+        }
 
-        await saveTaskInternal(task);
-        modals.edit.hide();
-    }
-    
-    async function toggleComplete(id, status) {
-        const task = allTasks.find(t => t.id == id);
-        if(task) {
-            task.isCompleted = !status;
-            if(task.isCompleted) task.completedAt = Date.now();
+        async function saveTask() {
+            const id = document.getElementById('taskId').value;
+            const task = {
+                id: id ? Number(id) : Date.now(),
+                taskName: document.getElementById('taskName').value,
+                timeSpent: document.getElementById('timeSpent').value,
+                taskDescription: document.getElementById('taskDescription').value,
+                isCompleted: document.getElementById('isCompleted').checked,
+                taskDate: document.getElementById('taskDate').value || null
+            };
+
+            if (!task.taskName) { alert("写点什么吧"); return; }
+            if (task.isCompleted && !task.completedAt) task.completedAt = Date.now(); // Record timestamp
+
             await saveTaskInternal(task);
+            modals.edit.hide();
         }
-    }
-    
-    async function saveTaskInternal(task) {
-        if(task.id) {
-            const idx = allTasks.findIndex(t => t.id == task.id);
-            if(idx > -1) allTasks[idx] = task; else allTasks.push(task);
-        }
-        
-        saveToCache();
-        renderCalendar(currentYear, currentMonth);
-        renderBacklog();
-        renderHeatmap();
-        updateStats(); // Updates stats cards and charts
-        updateDailyTodoList(); // Updates the daily list below calendar
-        if(modals.day._isShown) openDayModal(selectedDate);
 
-        try {
-            if(task.id) await axios.post(API_BASE, task); 
-        } catch(e) { console.warn("Sync failed"); }
-    }
-    
-    function deleteTaskFromEdit() {
-        const id = document.getElementById('taskId').value;
-        if(!confirm("确定删除?")) return;
-        allTasks = allTasks.filter(t => t.id != id);
-        saveTaskInternal({});
-        modals.edit.hide();
-        try { axios.delete(`${API_BASE}/${id}`); } catch(e){}
-    }
+        async function toggleComplete(id, status) {
+            const task = allTasks.find(t => t.id == id);
+            if (task) {
+                task.isCompleted = !status;
+                if (task.isCompleted) task.completedAt = Date.now();
+                await saveTaskInternal(task);
+            }
+        }
 
-    // --- Import & Export ---
-    function exportData(type) {
-        const ua = navigator.userAgent.toLowerCase();
-        if (ua.match(/MicroMessenger/i) || ua.match(/dingtalk/i)) {
-            alert("⚠️ 微信/钉钉无法下载，请在浏览器打开。"); return;
-        }
-        let content = "", fileName = "";
-        if (type === 'json') {
-            content = JSON.stringify(allTasks, null, 2);
-            fileName = `2026_Backup_${new Date().toISOString().slice(0,10)}.json`;
-        } else if (type === 'md') {
-            content = `# 📅 攻坚周报 (${new Date().toISOString().slice(0,10)})\n\n`;
-            const sorted = [...allTasks].sort((a,b) => (a.taskDate||'9999') > (b.taskDate||'9999') ? 1 : -1);
-            content += `## 🚀 待办池\n`;
-            sorted.filter(t => !t.taskDate).forEach(t => content += `- [ ] ${t.taskName}\n`);
-            content += `\n## 🗓️ 日程任务\n`;
-            let lastDate = '';
-            sorted.filter(t => t.taskDate).forEach(t => {
-                if(t.taskDate !== lastDate) { content += `\n### ${t.taskDate}\n`; lastDate = t.taskDate; }
-                content += `- [${t.isCompleted?'x':' '}] ${t.taskName} ${t.timeSpent ? '(`'+t.timeSpent+'`)' : ''}\n`;
-            });
-            fileName = 'Weekly_Report.md';
-        }
-        try {
-            const blob = new Blob([content], { type: "application/octet-stream" });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url; link.download = fileName;
-            document.body.appendChild(link); link.click();
-            setTimeout(() => { document.body.removeChild(link); window.URL.revokeObjectURL(url); }, 100);
-        } catch (e) {
-            alert("下载被拦截，请手动复制。");
-            const newWin = window.open("", "_blank");
-            newWin.document.write(`<pre>${content}</pre>`);
-        }
-    }
+        async function saveTaskInternal(task) {
+            // 1. 乐观更新：先更新本地内存，保证 UI 流畅
+            if (task.id) {
+                const idx = allTasks.findIndex(t => t.id == task.id);
+                if (idx > -1) allTasks[idx] = task; else allTasks.push(task);
+            }
 
-    function uploadCsv() {
-        const input = document.getElementById('csvFileInput');
-        input.setAttribute("accept", ".csv, .json, .txt");
-        if (!input.files || !input.files[0]) return;
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const text = e.target.result;
-            let importCount = 0;
+            // 触发 UI 重新渲染
+            saveToCache();
+            renderCalendar(currentYear, currentMonth);
+            renderBacklog();
+            renderHeatmap();
+            updateStats();
+            updateDailyTodoList();
+            if (modals.day._isShown) openDayModal(selectedDate);
+
+            // 2. 后端同步逻辑 (修复的核心)
             try {
-                if (file.name.endsWith('.json') || text.trim().startsWith('[')) {
-                    const jsonTasks = JSON.parse(text);
-                    if (Array.isArray(jsonTasks)) {
-                        jsonTasks.forEach(newTask => {
-                            const existingIdx = allTasks.findIndex(t => t.id == newTask.id);
-                            if (existingIdx > -1) allTasks[existingIdx] = newTask; 
-                            else allTasks.push(newTask);
-                        });
-                        importCount = jsonTasks.length;
+                // 判断逻辑：
+                // 数据库ID通常较小(如180)，前端临时ID是时间戳(如1734931200000，很大)
+                // 如果 ID > 100亿，说明是前端生成的临时 ID，需要走 POST 新增
+                // 否则是数据库 ID，走 PUT 更新
+                const isTempId = Number(task.id) > 10000000000;
+
+                if (isTempId) {
+                    // --- 新增 (POST) ---
+                    const res = await axios.post(API_BASE, task);
+
+                    // 【关键】获取后端返回的真实 ID (假设后端返回完整 Task 对象)
+                    // 你的 Java Controller 返回的是 DailyTask 对象，所以数据在 res.data 中
+                    const serverTask = res.data;
+
+                    if (serverTask && serverTask.id) {
+                        console.log(`任务创建成功，ID同步: ${task.id} -> ${serverTask.id}`);
+
+                        // 1. 更新内存数组中的 ID
+                        const localTask = allTasks.find(t => t.id == task.id);
+                        if (localTask) {
+                            localTask.id = serverTask.id; // 替换为真 ID
+                        }
+
+                        // 2. 如果当前编辑弹窗正打开着这个任务，也要更新隐藏域 ID
+                        // 否则用户点两次保存，第二次又会变成新建
+                        const editIdInput = document.getElementById('taskId');
+                        if (editIdInput && editIdInput.value == task.id) {
+                            editIdInput.value = serverTask.id;
+                        }
+
+                        // 3. 关联下拉框如果选的是旧ID，也要更新(比如番茄钟正在选这个任务)
+                        const timerSelect = document.getElementById('timerTaskSelect');
+                        if (timerSelect && timerSelect.value == task.id) {
+                            // 简单粗暴：重新渲染下拉框即可，或者直接改 value
+                            timerSelect.value = serverTask.id;
+                        }
+
+                        // 4. 持久化正确的 ID 到本地缓存
+                        saveToCache();
                     }
                 } else {
-                    const lines = text.split('\n');
-                    lines.forEach((line, index) => {
-                        if (index === 0 || !line.trim()) return; 
-                        const cols = line.split(',');
-                        if(cols.length >= 1) {
-                            allTasks.push({
-                                id: Date.now() + Math.random(),
-                                taskName: cols[0].trim(),
-                                taskDate: cols[1] ? cols[1].trim() : '',
-                                isCompleted: cols[2] === 'true',
-                                timeSpent: cols[3] || '0m',
-                                taskDescription: ''
-                            });
-                            importCount++;
-                        }
-                    });
+                    // --- 更新 (PUT) ---
+                    // 你的 Controller 定义是 @PutMapping("/{id}")
+                    // 所以 URL 需要拼接 ID: API_BASE + "/" + task.id
+                    await axios.put(`${API_BASE}/${task.id}`, task);
                 }
-                saveTaskInternal({});
-                alert(`🎉 成功导入/更新了 ${importCount} 条任务！`);
-            } catch (err) {
-                alert('❌ 导入失败：文件格式不正确。');
-            }
-            input.value = '';
-        };
-        reader.readAsText(file);
-    }
 
-    // --- Helpers (Format, Calc, Drag) ---
-    function updateStats() {
-        const todayStr = new Date().toISOString().split('T')[0];
-        const todayTasks = allTasks.filter(t => t.taskDate === todayStr);
-        let totalMins = 0;
-        todayTasks.forEach(t => totalMins += parseDurationToMinutes(t.timeSpent));
-        document.getElementById('statTotalTime').innerText = formatMinutes(totalMins);
-        document.getElementById('statTaskCount').innerText = `${todayTasks.filter(t=>t.isCompleted).length}/${todayTasks.length}`;
-        document.getElementById('statsDateDisplay').innerText = todayStr;
-        
-        renderStatsCharts();
-    }
-    
-    function renderBacklog() {
-        const container = document.getElementById('backlogList');
-        const tasks = allTasks.filter(t => !t.taskDate);
-        container.innerHTML = tasks.length ? tasks.map(t => `
+            } catch (e) {
+                console.error("同步失败:", e);
+                // 可选：添加用户提示
+            }
+        }
+
+        function deleteTaskFromEdit() {
+            const id = document.getElementById('taskId').value;
+            if (!confirm("确定删除?")) return;
+            allTasks = allTasks.filter(t => t.id != id);
+            saveTaskInternal({});
+            modals.edit.hide();
+            try { axios.delete(`${API_BASE}/${id}`); } catch (e) { }
+        }
+
+        // --- Import & Export ---
+        function exportData(type) {
+            const ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) || ua.match(/dingtalk/i)) {
+                alert("⚠️ 微信/钉钉无法下载，请在浏览器打开。"); return;
+            }
+            let content = "", fileName = "";
+            if (type === 'json') {
+                content = JSON.stringify(allTasks, null, 2);
+                fileName = `2026_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+            } else if (type === 'md') {
+                content = `# 📅 攻坚周报 (${new Date().toISOString().slice(0, 10)})\n\n`;
+                const sorted = [...allTasks].sort((a, b) => (a.taskDate || '9999') > (b.taskDate || '9999') ? 1 : -1);
+                content += `## 🚀 待办池\n`;
+                sorted.filter(t => !t.taskDate).forEach(t => content += `- [ ] ${t.taskName}\n`);
+                content += `\n## 🗓️ 日程任务\n`;
+                let lastDate = '';
+                sorted.filter(t => t.taskDate).forEach(t => {
+                    if (t.taskDate !== lastDate) { content += `\n### ${t.taskDate}\n`; lastDate = t.taskDate; }
+                    content += `- [${t.isCompleted ? 'x' : ' '}] ${t.taskName} ${t.timeSpent ? '(`' + t.timeSpent + '`)' : ''}\n`;
+                });
+                fileName = 'Weekly_Report.md';
+            }
+            try {
+                const blob = new Blob([content], { type: "application/octet-stream" });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url; link.download = fileName;
+                document.body.appendChild(link); link.click();
+                setTimeout(() => { document.body.removeChild(link); window.URL.revokeObjectURL(url); }, 100);
+            } catch (e) {
+                alert("下载被拦截，请手动复制。");
+                const newWin = window.open("", "_blank");
+                newWin.document.write(`<pre>${content}</pre>`);
+            }
+        }
+
+        async function uploadCsv() {
+            const input = document.getElementById('csvFileInput');
+            if (!input.files || !input.files[0]) return;
+
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                // 使用后端写好的导入接口
+                const res = await axios.post(`${API_BASE}/import`, formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                });
+
+                alert(res.data || '导入成功');
+                // 导入完成后立即从服务器拉取最新数据
+                syncWithServer();
+            } catch (e) {
+                console.error(e);
+                alert('导入失败: ' + (e.response?.data || e.message));
+            }
+            input.value = ''; // 清空，允许重复上传同一文件
+        }
+
+        // --- Helpers (Format, Calc, Drag) ---
+        function updateStats() {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = allTasks.filter(t => t.taskDate === todayStr);
+            let totalMins = 0;
+            todayTasks.forEach(t => totalMins += parseDurationToMinutes(t.timeSpent));
+            document.getElementById('statTotalTime').innerText = formatMinutes(totalMins);
+            document.getElementById('statTaskCount').innerText = `${todayTasks.filter(t => t.isCompleted).length}/${todayTasks.length}`;
+            document.getElementById('statsDateDisplay').innerText = todayStr;
+
+            renderStatsCharts();
+        }
+
+        function renderBacklog() {
+            const container = document.getElementById('backlogList');
+            const tasks = allTasks.filter(t => !t.taskDate);
+            container.innerHTML = tasks.length ? tasks.map(t => `
             <div class="backlog-item d-flex justify-content-between p-2 mb-1 border rounded bg-light" draggable="true" ondragstart="dragStart(event, ${t.id})">
                 <span>${t.taskName}</span>
                 <button class="btn btn-sm py-0" onclick="openEditModal(${t.id})"><i class="fas fa-pen small"></i></button>
             </div>
         `).join('') : `<div class="text-center text-muted mt-5 small">待办池为空</div>`;
-    }
+        }
 
-    function renderHeatmap() {
-        ['heatmapDesktop'].forEach(id => {
-             const container = document.getElementById(id); if(!container) return;
-             container.innerHTML = '';
-             const today = new Date();
-             for (let i = 364; i >= 0; i--) {
-                const d = new Date(); d.setDate(today.getDate() - i);
-                const dStr = d.toISOString().split('T')[0];
-                const tasks = allTasks.filter(t => t.taskDate === dStr && t.isCompleted);
-                let mins = 0; tasks.forEach(t => mins += parseDurationToMinutes(t.timeSpent));
-                let level = 'heatmap-box';
-                if (mins > 0) level += ' level-1';
-                if (mins > 60) level += ' level-2';
-                if (mins > 180) level += ' level-3';
-                if (mins > 300) level += ' level-4';
-                container.innerHTML += `<div class="${level}" title="${dStr}: ${mins}m"></div>`;
-             }
-        });
-    }
+        function renderHeatmap() {
+            ['heatmapDesktop'].forEach(id => {
+                const container = document.getElementById(id); if (!container) return;
+                container.innerHTML = '';
+                const today = new Date();
+                for (let i = 364; i >= 0; i--) {
+                    const d = new Date(); d.setDate(today.getDate() - i);
+                    const dStr = d.toISOString().split('T')[0];
+                    const tasks = allTasks.filter(t => t.taskDate === dStr && t.isCompleted);
+                    let mins = 0; tasks.forEach(t => mins += parseDurationToMinutes(t.timeSpent));
+                    let level = 'heatmap-box';
+                    if (mins > 0) level += ' level-1';
+                    if (mins > 60) level += ' level-2';
+                    if (mins > 180) level += ' level-3';
+                    if (mins > 300) level += ' level-4';
+                    container.innerHTML += `<div class="${level}" title="${dStr}: ${mins}m"></div>`;
+                }
+            });
+        }
 
-    function dragStart(e, id) { e.dataTransfer.setData("text/plain", id); }
-    function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
-    function leaveDrop(e) { e.currentTarget.classList.remove('drag-over'); }
-    async function dropOnCalendar(e, dateStr) {
-        e.preventDefault(); e.currentTarget.classList.remove('drag-over');
-        const id = e.dataTransfer.getData("text/plain");
-        const task = allTasks.find(t=>t.id==id); 
-        if(task) { task.taskDate = dateStr; await saveTaskInternal(task); }
-    }
-    async function dropToBacklog(e) {
-        e.preventDefault(); const id = e.dataTransfer.getData("text/plain");
-        const task = allTasks.find(t=>t.id==id); 
-        if(task) { task.taskDate = null; await saveTaskInternal(task); }
-    }
+        function dragStart(e, id) { e.dataTransfer.setData("text/plain", id); }
+        function allowDrop(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+        function leaveDrop(e) { e.currentTarget.classList.remove('drag-over'); }
+        async function dropOnCalendar(e, dateStr) {
+            e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+            const id = e.dataTransfer.getData("text/plain");
+            const task = allTasks.find(t => t.id == id);
+            if (task) { task.taskDate = dateStr; await saveTaskInternal(task); }
+        }
+        async function dropToBacklog(e) {
+            e.preventDefault(); const id = e.dataTransfer.getData("text/plain");
+            const task = allTasks.find(t => t.id == id);
+            if (task) { task.taskDate = null; await saveTaskInternal(task); }
+        }
 
-    // --- Timer ---
-    function openPomodoroModal() {
-        const select = document.getElementById('timerTaskSelect');
-        const todayStr = new Date().toISOString().split('T')[0];
-        const todayTasks = allTasks.filter(t => t.taskDate === todayStr && !t.isCompleted);
-        select.innerHTML = '<option value="">-- 不关联任务 --</option>' + 
-            todayTasks.map(t => `<option value="${t.id}">${t.taskName}</option>`).join('');
-        updateTimerDisplay(); modals.pomo.show();
-    }
-    function switchTimerMode(mode) { timerState.mode = mode; resetTimer(); }
-    function toggleTimerState() {
-        if(timerState.running) {
-            clearInterval(timerState.interval); timerState.running = false;
+        // --- Timer ---
+        function openPomodoroModal() {
+            const select = document.getElementById('timerTaskSelect');
+            const todayStr = new Date().toISOString().split('T')[0];
+            const todayTasks = allTasks.filter(t => t.taskDate === todayStr && !t.isCompleted);
+            select.innerHTML = '<option value="">-- 不关联任务 --</option>' +
+                todayTasks.map(t => `<option value="${t.id}">${t.taskName}</option>`).join('');
+            updateTimerDisplay(); modals.pomo.show();
+        }
+        function switchTimerMode(mode) { timerState.mode = mode; resetTimer(); }
+        function toggleTimerState() {
+            if (timerState.running) {
+                clearInterval(timerState.interval); timerState.running = false;
+                document.getElementById('timerActionBtn').innerText = '开始';
+                document.getElementById('timerActionBtn').classList.replace('btn-danger', 'btn-primary');
+                if (timerState.elapsed > 60000) saveTimerResult();
+            } else {
+                timerState.running = true; timerState.startTime = Date.now() - timerState.elapsed;
+                document.getElementById('timerActionBtn').innerText = '停止';
+                document.getElementById('timerActionBtn').classList.replace('btn-primary', 'btn-danger');
+                timerState.interval = setInterval(updateTimerTick, 1000);
+            }
+        }
+        function updateTimerTick() {
+            if (timerState.mode === 'stopwatch') { timerState.elapsed = Date.now() - timerState.startTime; }
+            else {
+                const target = (timerState.pomoPhase === 'work' ? timerState.pomoWorkMin : timerState.pomoBreakMin) * 60000;
+                const session = Date.now() - timerState.startTime;
+                if (session >= target) {
+                    resetTimer(); alert("⏰ 时间到！");
+                    if (timerState.pomoPhase === 'work') { saveTimerResult(); timerState.pomoPhase = 'break'; }
+                    else timerState.pomoPhase = 'work';
+                    return;
+                }
+                timerState.elapsed = session;
+            }
+            updateTimerDisplay();
+        }
+        function updateTimerDisplay() {
+            let display = "";
+            if (timerState.mode === 'stopwatch') display = formatMs(timerState.elapsed);
+            else {
+                const target = (timerState.pomoPhase === 'work' ? timerState.pomoWorkMin : timerState.pomoBreakMin) * 60000;
+                display = formatMs(Math.max(0, target - timerState.elapsed));
+            }
+            document.getElementById('timerDisplay').innerText = display;
+        }
+        function resetTimer() {
+            clearInterval(timerState.interval); timerState.running = false; timerState.elapsed = 0;
             document.getElementById('timerActionBtn').innerText = '开始';
             document.getElementById('timerActionBtn').classList.replace('btn-danger', 'btn-primary');
-            if(timerState.elapsed > 60000) saveTimerResult();
-        } else {
-            timerState.running = true; timerState.startTime = Date.now() - timerState.elapsed;
-            document.getElementById('timerActionBtn').innerText = '停止';
-            document.getElementById('timerActionBtn').classList.replace('btn-primary', 'btn-danger');
-            timerState.interval = setInterval(updateTimerTick, 1000);
+            updateTimerDisplay();
         }
-    }
-    function updateTimerTick() {
-        if(timerState.mode === 'stopwatch') { timerState.elapsed = Date.now() - timerState.startTime; }
-        else {
-            const target = (timerState.pomoPhase==='work'?timerState.pomoWorkMin:timerState.pomoBreakMin)*60000;
-            const session = Date.now() - timerState.startTime;
-            if (session >= target) {
-                resetTimer(); alert("⏰ 时间到！");
-                if(timerState.pomoPhase==='work') { saveTimerResult(); timerState.pomoPhase='break'; }
-                else timerState.pomoPhase='work';
+        async function saveTimerResult() {
+            const taskId = document.getElementById('timerTaskSelect').value;
+            if (!taskId) return;
+            const task = allTasks.find(t => t.id == taskId);
+            if (!task) return;
+            let addedMins = 0;
+            if (timerState.mode === 'stopwatch') addedMins = Math.floor(timerState.elapsed / 60000);
+            else if (timerState.mode === 'pomo' && timerState.pomoPhase === 'work') addedMins = timerState.pomoWorkMin;
+            if (addedMins > 0) {
+                const current = parseDurationToMinutes(task.timeSpent);
+                task.timeSpent = formatMinutes(current + addedMins);
+                await saveTaskInternal(task);
+            }
+        }
+
+        // --- Auth & Sync ---
+        function checkLoginState() {
+            if (localStorage.getItem('token')) document.getElementById('authSection').innerHTML = `<button class="btn btn-sm btn-outline-secondary" onclick="logout()">退出</button>`;
+            else document.getElementById('authSection').innerHTML = `<button class="btn btn-dark btn-sm rounded-pill" onclick="openLoginModal()">登录</button>`;
+        }
+        function openLoginModal() { modals.login.show(); }
+        async function handleLogin() {
+            const u = document.getElementById('username').value, p = document.getElementById('password').value;
+            try {
+                const res = await axios.post(LOGIN_API, { username: u, password: p });
+                if (res.data.code === 200) {
+                    localStorage.setItem('token', res.data.data.token);
+                    modals.login.hide(); checkLoginState(); syncWithServer();
+                } else alert('Login Failed');
+            } catch (e) { alert('Error'); }
+        }
+        function logout() { localStorage.removeItem('token'); location.reload(); }
+        function loadFromCache() { const d = localStorage.getItem(LOCAL_STORAGE_KEY); if (d) allTasks = JSON.parse(d); }
+        function saveToCache() { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(allTasks)); }
+        // 简单修复：检测模态框是否打开
+
+        async function syncWithServer() {
+
+            if (!localStorage.getItem('token')) return;
+            // 如果用户正在编辑或计时，暂停自动同步，防止干扰
+            if (document.getElementById('editModal').classList.contains('show') ||
+                timerState.running) {
+                console.log("用户操作中，跳过自动同步");
                 return;
             }
-            timerState.elapsed = session;
+            try {
+                const res = await axios.get(API_BASE);
+                if (res.data && JSON.stringify(res.data) !== JSON.stringify(allTasks)) {
+                    allTasks = res.data; saveToCache();
+                    renderCalendar(currentYear, currentMonth); renderBacklog(); renderHeatmap(); updateStats();
+                }
+            } catch (e) { console.log('Sync error:', e); }
         }
-        updateTimerDisplay();
-    }
-    function updateTimerDisplay() {
-        let display = "";
-        if(timerState.mode==='stopwatch') display = formatMs(timerState.elapsed);
-        else {
-            const target = (timerState.pomoPhase==='work'?timerState.pomoWorkMin:timerState.pomoBreakMin)*60000;
-            display = formatMs(Math.max(0, target - timerState.elapsed));
-        }
-        document.getElementById('timerDisplay').innerText = display;
-    }
-    function resetTimer() {
-        clearInterval(timerState.interval); timerState.running=false; timerState.elapsed=0;
-        document.getElementById('timerActionBtn').innerText = '开始';
-        document.getElementById('timerActionBtn').classList.replace('btn-danger', 'btn-primary');
-        updateTimerDisplay();
-    }
-    async function saveTimerResult() {
-        const taskId = document.getElementById('timerTaskSelect').value;
-        if(!taskId) return;
-        const task = allTasks.find(t => t.id == taskId);
-        if(!task) return;
-        let addedMins = 0;
-        if (timerState.mode === 'stopwatch') addedMins = Math.floor(timerState.elapsed / 60000);
-        else if (timerState.mode === 'pomo' && timerState.pomoPhase === 'work') addedMins = timerState.pomoWorkMin;
-        if (addedMins > 0) {
-            const current = parseDurationToMinutes(task.timeSpent);
-            task.timeSpent = formatMinutes(current + addedMins);
-            await saveTaskInternal(task);
-        }
-    }
+        // --- 🔄 手动同步逻辑 ---
+    async function handleManualSync() {
+        const btn = document.getElementById('btnSync');
+        const icon = document.getElementById('iconSync');
+        
+        // 1. UI 开始加载状态
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        icon.classList.add('fa-spin'); // 让图标转起来
+        
+        try {
+            console.log("🔄 开始手动同步...");
 
-    // --- Auth & Sync ---
-    function checkLoginState() {
-        if(localStorage.getItem('token')) document.getElementById('authSection').innerHTML = `<button class="btn btn-sm btn-outline-secondary" onclick="logout()">退出</button>`;
-        else document.getElementById('authSection').innerHTML = `<button class="btn btn-dark btn-sm rounded-pill" onclick="openLoginModal()">登录</button>`;
-    }
-    function openLoginModal() { modals.login.show(); }
-    async function handleLogin() {
-        const u = document.getElementById('username').value, p = document.getElementById('password').value;
-        try {
-            const res = await axios.post(LOGIN_API, { username: u, password: p });
-            if(res.data.code === 200) {
-                localStorage.setItem('token', res.data.data.token);
-                modals.login.hide(); checkLoginState(); syncWithServer();
-            } else alert('Login Failed');
-        } catch(e) { alert('Error'); }
-    }
-    function logout() { localStorage.removeItem('token'); location.reload(); }
-    function loadFromCache() { const d = localStorage.getItem(LOCAL_STORAGE_KEY); if(d) allTasks = JSON.parse(d); }
-    function saveToCache() { localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(allTasks)); }
-    async function syncWithServer() {
-        if(!localStorage.getItem('token')) return;
-        try {
-            const res = await axios.get(API_BASE);
-            if(res.data && JSON.stringify(res.data) !== JSON.stringify(allTasks)) {
-                allTasks = res.data; saveToCache();
-                renderCalendar(currentYear, currentMonth); renderBacklog(); renderHeatmap(); updateStats();
+            // 2. 【上行】检查是否有临时 ID 的任务 (离线创建的数据) 并上传
+            // 临时 ID 通常是时间戳，必定大于 100亿
+            const tempTasks = allTasks.filter(t => t.id > 10000000000);
+            
+            if (tempTasks.length > 0) {
+                console.log(`📡 检测到 ${tempTasks.length} 个未同步的新任务，正在上传...`);
+                // 使用 Promise.all 并发上传，提高速度
+                // 注意：这里调用的是之前修复过的 saveTaskInternal，它会自动更新 ID
+                await Promise.all(tempTasks.map(t => saveTaskInternal(t)));
             }
-        } catch(e){console.log('Sync error:', e);}
-    }
 
-    // --- Utils ---
-    function parseDurationToMinutes(str) {
-        if (!str) return 0;
-        let mins = 0;
-        const hMatch = str.match(/(\d+(\.\d+)?)h/);
-        const mMatch = str.match(/(\d+)m/);
-        if (hMatch) mins += parseFloat(hMatch[1]) * 60;
-        if (mMatch) mins += parseInt(mMatch[1]);
-        if (!hMatch && !mMatch && !isNaN(str)) mins += parseInt(str);
-        return mins;
+            // 3. 【下行】强制从服务器拉取最新数据
+            // 这里我们手动调用 axios 获取，不复用自动同步逻辑，以确保“强制刷新”
+            const res = await axios.get(API_BASE);
+            if (res.status === 200) {
+                allTasks = res.data;
+                
+                // 4. 保存到本地缓存并重新渲染所有视图
+                saveToCache();
+                renderCalendar(currentYear, currentMonth);
+                renderBacklog();
+                renderHeatmap();
+                updateStats(); 
+                updateDailyTodoList();
+                
+                // 如果当前打开了详情弹窗，也刷新一下
+                if(modals.day._isShown) openDayModal(selectedDate);
+                
+                // 成功提示 (使用 toast 或简单的 alert，或者改变按钮颜色)
+                btn.classList.remove('btn-warning');
+                btn.classList.add('btn-success');
+                setTimeout(() => {
+                     btn.classList.remove('btn-success');
+                     btn.classList.add('btn-warning');
+                }, 2000);
+                
+                console.log("✅ 同步完成，视图已刷新");
+            }
+        } catch (e) {
+            console.error("同步失败:", e);
+            alert("同步失败，请检查网络或登录状态");
+        } finally {
+            // 5. 恢复 UI 状态
+            icon.classList.remove('fa-spin');
+            btn.disabled = false;
+        }
     }
-    function formatMinutes(totalMins) {
-        const h = Math.floor(totalMins / 60);
-        const m = Math.floor(totalMins % 60);
-        return h > 0 ? `${h}h ${m}m` : `${m}m`;
-    }
-    function formatMs(ms) {
-        const s = Math.floor(ms/1000); return `${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;
-    }
-    function getTaskStyleClass(name) {
-        if (!name) return 'type-learn';
-        const n = name.toLowerCase();
-        if (n.includes('lc') || n.includes('算法')) return 'type-algo';
-        if (n.includes('proj') || n.includes('项目')) return 'type-proj';
-        if (n.includes('rev') || n.includes('复习')) return 'type-rev';
-        return 'type-learn';
-    }
-</script>
+        // --- Utils ---
+        function parseDurationToMinutes(str) {
+            if (!str) return 0;
+            let mins = 0;
+            const hMatch = str.match(/(\d+(\.\d+)?)h/);
+            const mMatch = str.match(/(\d+)m/);
+            if (hMatch) mins += parseFloat(hMatch[1]) * 60;
+            if (mMatch) mins += parseInt(mMatch[1]);
+            if (!hMatch && !mMatch && !isNaN(str)) mins += parseInt(str);
+            return mins;
+        }
+        function formatMinutes(totalMins) {
+            const h = Math.floor(totalMins / 60);
+            const m = Math.floor(totalMins % 60);
+            return h > 0 ? `${h}h ${m}m` : `${m}m`;
+        }
+        function formatMs(ms) {
+            const s = Math.floor(ms / 1000); return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+        }
+        function getTaskStyleClass(name) {
+            if (!name) return 'type-learn';
+            const n = name.toLowerCase();
+            if (n.includes('lc') || n.includes('算法')) return 'type-algo';
+            if (n.includes('proj') || n.includes('项目')) return 'type-proj';
+            if (n.includes('rev') || n.includes('复习')) return 'type-rev';
+            return 'type-learn';
+        }
+    </script>
 </body>
+
 </html>
